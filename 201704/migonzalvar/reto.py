@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import sys
 
 
 def tokenizer(s):
@@ -26,15 +27,21 @@ class Parser:
         self.tokens = []
         self.stack = []
         self.new_line = False
+        self.number_of_lines = 1
 
     def add(self, token):
         if token == '\n':
             self.tokens.append('\n')
+            self.number_of_lines += 1
             self.new_line = True
             return
 
         if token in ['NEXT', 'ENDIF']:
             block = self.stack.pop(-1)
+            if (block == 'IF' and token != 'ENDIF'):
+                sys.stderr.write('ERROR LINE {}: Expecting ENDIF but {} found\n'.format(self.number_of_lines, token))
+            if (block == 'FOR' and token != 'NEXT'):
+                sys.stderr.write('ERROR LINE {}: Expecting NEXT but {} found\n'.format(self.number_of_lines, token))
 
         if self.new_line:
             self.tokens.append(indentation(len(self.stack), self.indent_word))
@@ -61,7 +68,6 @@ def parse(in_file, out_file):
 
 
 def main():
-    import sys
     parse(sys.stdin, sys.stdout)
 
 
