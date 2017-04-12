@@ -54,5 +54,4 @@ def parse(in_file, out_file):
         tokens = tokenizer(line)
         for token in tokens:
             parser.add(token)
-    print(parser.tokens)
     out_file.write(str(parser))
