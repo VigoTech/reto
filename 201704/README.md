@@ -2,6 +2,10 @@
 
 No ano 2095, nun interesante xiro dos acontecementos, decídese que a linguaxe Basic, con máis de 50 anos, é a mellor linguaxe do universo. Ti traballas para unha compañía de nome DinoSetoSpace que recentemente foi adquirida por unha compañía chamada SirenoExpress. Mentres DinoSetoSpace ten unhas normas moi rigorosas de formateo, exactamente catro espazos por nivel de indentación, os desenvolvedores de SirenoExpress fixeron o que lles saíu do peto. O teu traballo e actualizar os proxectos de SirenoExpress os estándares de DinoSetoSpace.
 
+## Data Límite creación da PR
+
+Luns 24 de Abril as 21:00
+
 ## Descrición da entrada
 
 Se te dará un número N, representando o número de liñas Basic. Seguindo esa liña, haberá outra liña co texto usado para indentar, qué será ···· para que se poda ver. Finalmente, haberá N liñas de pseudocódigo mezclando diferentes tipos de indentación (espazos e tabuladores, representados por · e » por visibilidade) que necesitan ser reindentados.
@@ -11,6 +15,7 @@ Os bloques están limitados por IF e ENDIF, e tamén por FOR e NEXT.
 ## Descrición da saída
 
 A tua saía debería ser código fonte indentado polas guías de DinoSetoSpace.
+
 
 # Exemplo de entrada
 
