@@ -25,4 +25,5 @@ Ver [201704/README.md](201704/README.md)
 ### PRs para votar:
 
 - Solución en Scala de [@rubenrua](https://github.com/rubenrua): https://github.com/vigojug/reto/pull/2)
+- Solución en Kotlin de [@albertoruibal](https://github.com/albertoruibal): https://github.com/vigojug/reto/pull/4
 
