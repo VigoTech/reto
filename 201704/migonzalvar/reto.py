@@ -37,7 +37,12 @@ class Parser:
             return
 
         if token in ['NEXT', 'ENDIF']:
-            block = self.stack.pop(-1)
+            try:
+                block = self.stack.pop(-1)
+            except IndexError:
+                sys.stderr.write('ERROR LINE {}: not found open block for {}\n'.format(self.number_of_lines, token))
+                block = None
+
             if (block == 'IF' and token != 'ENDIF'):
                 sys.stderr.write('ERROR LINE {}: Expecting ENDIF but {} found\n'.format(self.number_of_lines, token))
             if (block == 'FOR' and token != 'NEXT'):
