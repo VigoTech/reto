@@ -1,3 +1,6 @@
+#!/usr/bin/env python3
+
+
 def tokenizer(s):
     """
     Split a code line in tokens.
@@ -55,3 +58,12 @@ def parse(in_file, out_file):
         for token in tokens:
             parser.add(token)
     out_file.write(str(parser))
+
+
+def main():
+    import sys
+    parse(sys.stdin, sys.stdout)
+
+
+if __name__ == '__main__':
+    main()
