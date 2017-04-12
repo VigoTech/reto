@@ -18,9 +18,11 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG do [PHPVigo](h
 
 - Todas as PRs se poñerán en master unha vez rematado o reto.
 
-## Reto Abril 2017
+## Reto Abril 2017: data límite luns 24 de Abril as 21:00
 
 Ver [201704/README.md](201704/README.md)
 
 ### PRs para votar:
+
+- Solución en Scala de [@rubenrua](https://github.com/rubenrua): https://github.com/vigojug/reto/pull/2)
 
