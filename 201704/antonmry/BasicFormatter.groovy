@@ -11,6 +11,7 @@
 class BasicFormatter {
 
     def console
+    final String lineSeparator = System.getProperty('line.separator')
 
     BasicFormatter() {
         this.console = System.console()
@@ -29,27 +30,37 @@ class BasicFormatter {
         input
     }
 
+    void publishln(def output) {
+        System.out << output << lineSeparator
+    }
+
+    void publish(def output) {
+        System.out << output
+    }
+
+    void publishError(output) {
+        System.out << 'Error: ' << output << lineSeparator
+    }
+
     void run() {
         // Retrieve the number of lines
-        def input = getInput("", 0)
+        def input = getInput('', 0)
         int numberLines = input.isInteger() ? input as int : null
         if (numberLines < 1) {
-            print 'You have to insert a number bigger than 0'
+            publishError 'You have to insert a number bigger than 0'
             return
         }
 
         // Retrieve indent char
-        String indStr = getInput("", "")
+        String indStr = getInput('', '')
 
         // Retrieve lines
         int indentFor = 0
         int indentIf = 0
         def output = '' << ''
 
-        (1..numberLines).forEach() {
-            input = getInput("", "") as String
-
-            input = input.replaceAll(/·|»/, "")
+        (1..numberLines).forEach {
+            input = getInput('', '').replaceAll(/·|»/, '')
 
             if (input.startsWith('ENDIF')) {
                 indentIf--
@@ -60,9 +71,9 @@ class BasicFormatter {
             }
 
             if (indentIf + indentFor > 0) {
-                output <<= indStr * (indentIf + indentFor) + input + System.getProperty("line.separator")
+                output <<= indStr * (indentIf + indentFor) + input + lineSeparator
             } else {
-                output <<= input + System.getProperty("line.separator")
+                output <<= input + lineSeparator
             }
 
             if (input.startsWith('FOR')) {
@@ -75,25 +86,24 @@ class BasicFormatter {
         }
 
         if (indentIf > 0) {
-            println "Error: $indentIf ENDIF missed"
+            publishError "$indentIf ENDIF missed"
         }
 
         if (indentIf < 0) {
-            println "Error: ${-1*indentIf} IF missed"
+            publishError "${indentIf.abs()} IF missed"
         }
 
         if (indentFor > 0) {
-            println "Error: $indentFor NEXT missed"
+            publishError "$indentFor NEXT missed"
         }
 
         if (indentFor < 0) {
-            println "Error: ${-1*indentFor} FOR missed"
+            publishError "${indentFor.abs()} FOR missed"
         }
 
-        if ((indentFor == 0) && (indentIf == 0) ) {
-            print output
+        if ((indentFor == 0) && (indentIf == 0)) {
+            publish output
         }
     }
 }
-
 
