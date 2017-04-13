@@ -6,8 +6,11 @@ import org.springframework.boot.test.OutputCapture
 
 interface MockConsole {
     String readLine(String fmt, Object... args)
+
     String readLine()
+
     char[] readPassword(String fmt, Object... args)
+
     char[] readPassword()
 }
 
@@ -79,8 +82,8 @@ NEXT
         formatter.run()
 
         then:
-        capture.toString() == '''Incorrect code:
-- ENDIF is missing'''
+        capture.toString() == '''Error: 1 ENDIF missed
+'''
     }
 
     def "BASIC indentation fails because an ENDIF and NEXT are missing"() {
@@ -102,9 +105,10 @@ FOR I=0 TO 10
         formatter.run()
 
         then:
-        capture.toString() == '''Incorrect code:
-- ENDIF is missing
-- NEXT is missing'''
+        capture.toString() == '''Error: 1 ENDIF missed
+Error: 1 NEXT missed
+'''
+
     }
 
 
@@ -127,9 +131,9 @@ ENDIF
         formatter.run()
 
         then:
-        capture.toString() == '''Incorrect code:
-- IF is missing
-- NEXT is missing'''
+        capture.toString() == '''Error: 1 IF missed
+Error: 1 NEXT missed
+'''
     }
 
     def "BASIC indentation fails because there is an extra ENDIF"() {
@@ -152,7 +156,7 @@ ENDIF
         formatter.run()
 
         then:
-        capture.toString() == '''Incorrect code:
-- IF is missing'''
+        capture.toString() == '''Error: 1 IF missed
+'''
     }
 }

@@ -29,23 +29,71 @@ class BasicFormatter {
         input
     }
 
-    void finishWithError(String error) {
-        println "You have to insert at least 1 line"
-        System.exit(-1)
-    }
-
     void run() {
         // Retrieve the number of lines
         def input = getInput("", 0)
-        int numberLines = input.isInteger() ? input.toInteger() : null
-        if (numberLines < 1) finishWithError("You have to insert a number bigger than 0")
+        int numberLines = input.isInteger() ? input as int : null
+        if (numberLines < 1) {
+            print 'You have to insert a number bigger than 0'
+            return
+        }
 
         // Retrieve indent char
-        def indStr = getInput("", "")
+        String indStr = getInput("", "")
+
+        // Retrieve lines
+        int indentFor = 0
+        int indentIf = 0
+        def output = '' << ''
 
         (1..numberLines).forEach() {
-            input = getInput("", "")
+            input = getInput("", "") as String
+
+            input = input.replaceAll(/·|»/, "")
+
+            if (input.startsWith('ENDIF')) {
+                indentIf--
+            }
+
+            if (input.startsWith('NEXT')) {
+                indentFor--
+            }
+
+            if (indentIf + indentFor > 0) {
+                output <<= indStr * (indentIf + indentFor) + input + System.getProperty("line.separator")
+            } else {
+                output <<= input + System.getProperty("line.separator")
+            }
+
+            if (input.startsWith('FOR')) {
+                indentFor++
+            }
+
+            if (input.startsWith('IF')) {
+                indentIf++
+            }
+        }
+
+        if (indentIf > 0) {
+            println "Error: $indentIf ENDIF missed"
+        }
+
+        if (indentIf < 0) {
+            println "Error: ${-1*indentIf} IF missed"
+        }
+
+        if (indentFor > 0) {
+            println "Error: $indentFor NEXT missed"
+        }
+
+        if (indentFor < 0) {
+            println "Error: ${-1*indentFor} FOR missed"
+        }
+
+        if ((indentFor == 0) && (indentIf == 0) ) {
+            print output
         }
     }
 }
+
 
