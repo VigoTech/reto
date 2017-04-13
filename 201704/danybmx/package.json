@@ -1,0 +1,15 @@
+{
+  "name": "reto-1-vigojug",
+  "version": "1.0.0",
+  "description": "No ano 2095, nun interesante xiro dos acontecementos, decídese que a linguaxe Basic, con máis de 50 anos, é a mellor linguaxe do universo. Ti traballas para unha compañía de nome DinoSetoSpace que recentemente foi adquirida por unha compañía chamada SirenoExpress. Mentres DinoSetoSpace ten unhas normas moi rigorosas de formateo, exactamente catro espazos por nivel de indentación, os desenvolvedores de SirenoExpress fixeron o que lles saíu do peto. O teu traballo e actualizar os proxectos de SirenoExpress os estándares de DinoSetoSpace.",
+  "main": "parse.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": ["javascript", "js", "jest", "reto", "vigojug"],
+  "author": "danybmx",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^19.0.2"
+  }
+}

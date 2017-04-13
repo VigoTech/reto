@@ -1,0 +1,5 @@
+3
+.....
+FOR I=0 TO 10
+····PRINT I
+ENDIF
