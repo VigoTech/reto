@@ -24,6 +24,8 @@ Ver [201704/README.md](201704/README.md)
 
 ### PRs para votar:
 
-- Solución en Scala de [@rubenrua](https://github.com/rubenrua): https://github.com/vigojug/reto/pull/2)
+- Solución en Scala de [@rubenrua](https://github.com/rubenrua): https://github.com/vigojug/reto/pull/2
 - Solución en Kotlin de [@albertoruibal](https://github.com/albertoruibal): https://github.com/vigojug/reto/pull/4
 - Solución en Python de [@migonzalvar](https://github.com/migonzalvar): https://github.com/vigojug/reto/pull/5
+- Solución en JS de [@danybmx](https://github.com/danybmx): https://github.com/vigojug/reto/pull/6
+- Solución en Groovy de [@antonmry](https://github.com/antonmry): https://github.com/vigojug/reto/pull/7
