@@ -1,17 +1,24 @@
+import groovy.transform.CompileStatic
+import groovy.transform.TypeCheckingMode
+
 /**
  * Basic formatter by @antonmry
  *
  * One possible Groovy solution to the April'17 VigoJUG Challenge.
  * More info: https://github.com/vigojug/reto
  *
- * Sources:
- *  http://stackoverflow.com/questions/20789662/test-groovy-class-that-uses-system-console
  */
 
+@CompileStatic
 class BasicFormatter {
 
-    def console
+    String indentationStr = ''
+    int numberLines = 0
+    int indentFor = 0
+    int indentIf = 0
     final String lineSeparator = System.getProperty('line.separator')
+    // Used to make easier unit testing
+    def console
 
     BasicFormatter() {
         this.console = System.console()
@@ -25,39 +32,35 @@ class BasicFormatter {
         }
     }
 
-    def getInput = { prompt, defValue ->
-        def input = (this.console.readLine(prompt, null).trim() ?: defValue)?.toString()
-        input
-    }
-
-    void publishln(def output) {
-        System.out << output << lineSeparator
-    }
-
-    void publish(def output) {
-        System.out << output
-    }
-
-    void publishError(output) {
-        System.out << 'Error: ' << output << lineSeparator
-    }
-
-    void run() {
-        // Retrieve the number of lines
-        def input = getInput('', 0)
-        int numberLines = input.isInteger() ? input as int : null
-        if (numberLines < 1) {
-            publishError 'You have to insert a number bigger than 0'
-            return
+    static main(String[] args) {
+        def formatter = new BasicFormatter()
+        if (formatter.setNumberLines(System.err)) {
+            formatter.setIdentationStr()
+            formatter.autoIndent(System.out)
+            formatter.validateSourceCode(System.err)
         }
+    }
 
-        // Retrieve indent char
-        String indStr = getInput('', '')
+    // Read from the console the number of lines.
+    boolean setNumberLines(PrintStream output) {
+        String input = getInput('', '0')
+        numberLines = input.isInteger() ? input as int : null
+        if (numberLines < 1) {
+            output << 'You have to insert a number bigger than 0' << lineSeparator
+            return false
+        }
+        return true
+    }
 
-        // Retrieve lines
-        int indentFor = 0
-        int indentIf = 0
-        def output = '' << ''
+    // Read from the console the char/string used to indent.
+    void setIdentationStr() {
+        indentationStr = getInput('', '')
+    }
+
+    // Read from the console and indent the source code.
+    void autoIndent(PrintStream output) {
+
+        String input
 
         (1..numberLines).forEach {
             input = getInput('', '').replaceAll(/·|»/, '')
@@ -71,7 +74,7 @@ class BasicFormatter {
             }
 
             if (indentIf + indentFor > 0) {
-                output <<= indStr * (indentIf + indentFor) + input + lineSeparator
+                output <<= indentationStr * (indentIf + indentFor) + input + lineSeparator
             } else {
                 output <<= input + lineSeparator
             }
@@ -85,25 +88,32 @@ class BasicFormatter {
             }
         }
 
-        if (indentIf > 0) {
-            publishError "$indentIf ENDIF missed"
-        }
+    }
 
-        if (indentIf < 0) {
-            publishError "${indentIf.abs()} IF missed"
+    // Validate BASIC source code previously auto-indented with autoIndent
+    // and print errors in the output parameter.
+    boolean validateSourceCode(PrintStream output) {
+
+        if (indentIf > 0) {
+            output << "Error: $indentIf ENDIF missed" << lineSeparator
+        } else if (indentIf < 0) {
+            output << "Error: ${indentIf.abs()} IF missed" << lineSeparator
         }
 
         if (indentFor > 0) {
-            publishError "$indentFor NEXT missed"
+            output << "Error: $indentFor NEXT missed" << lineSeparator
+        } else if (indentFor < 0) {
+            output << "Error: ${indentFor.abs()} FOR missed" << lineSeparator
         }
 
-        if (indentFor < 0) {
-            publishError "${indentFor.abs()} FOR missed"
-        }
+    }
 
-        if ((indentFor == 0) && (indentIf == 0)) {
-            publish output
-        }
+    // Utility method to make easier to mock the console in Unit Tests
+    // Sources: http://stackoverflow.com/questions/20789662/test-groovy-class-that-uses-system-console
+    @CompileStatic(value=TypeCheckingMode.SKIP)
+    private String getInput(String prompt, String defValue) {
+        String input = (console.readLine(prompt, null).trim() ?: defValue)?.toString()
+        input
     }
 }
 

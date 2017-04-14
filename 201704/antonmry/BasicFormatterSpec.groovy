@@ -1,18 +1,8 @@
-//@Grab(group = 'org.spockframework', module = 'spock-core', version = '1.1-groovy-2.4-rc-4')
-//@Grab('org.springframework.boot:spring-boot:1.2.1.RELEASE')
+@Grab(group = 'org.spockframework', module = 'spock-core', version = '1.1-groovy-2.4-rc-4')
+@Grab('org.springframework.boot:spring-boot:1.2.1.RELEASE')
 
 import spock.lang.*
 import org.springframework.boot.test.OutputCapture
-
-interface MockConsole {
-    String readLine(String fmt, Object... args)
-
-    String readLine()
-
-    char[] readPassword(String fmt, Object... args)
-
-    char[] readPassword()
-}
 
 class BasicFormatterSpec extends Specification {
 
@@ -44,7 +34,10 @@ VAR I
 
         when:
         def formatter = new BasicFormatter(consoleMock)
-        formatter.run()
+        formatter.setNumberLines(System.err)
+        formatter.setIdentationStr()
+        formatter.autoIndent(System.out)
+        formatter.validateSourceCode(System.err)
 
         then:
         capture.toString() == """VAR I
@@ -79,10 +72,17 @@ NEXT
 
         when:
         def formatter = new BasicFormatter(consoleMock)
-        formatter.run()
+        formatter.setNumberLines(System.err)
+        formatter.setIdentationStr()
+        formatter.autoIndent(System.out)
+        formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''Error: 1 ENDIF missed
+        capture.toString() == '''FOR I=0 TO 10
+....IF I MOD 2 THEN
+........PRINT I
+....NEXT
+Error: 1 ENDIF missed
 '''
     }
 
@@ -102,10 +102,16 @@ FOR I=0 TO 10
 
         when:
         def formatter = new BasicFormatter(consoleMock)
-        formatter.run()
+        formatter.setNumberLines(System.err)
+        formatter.setIdentationStr()
+        formatter.autoIndent(System.out)
+        formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''Error: 1 ENDIF missed
+        capture.toString() == '''FOR I=0 TO 10
+....IF I MOD 2 THEN
+........PRINT I
+Error: 1 ENDIF missed
 Error: 1 NEXT missed
 '''
 
@@ -128,10 +134,16 @@ ENDIF
 
         when:
         def formatter = new BasicFormatter(consoleMock)
-        formatter.run()
+        formatter.setNumberLines(System.err)
+        formatter.setIdentationStr()
+        formatter.autoIndent(System.out)
+        formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''Error: 1 IF missed
+        capture.toString() == '''FOR I=0 TO 10
+.....PRINT I
+ENDIF
+Error: 1 IF missed
 Error: 1 NEXT missed
 '''
     }
@@ -153,10 +165,28 @@ ENDIF
 
         when:
         def formatter = new BasicFormatter(consoleMock)
-        formatter.run()
+        formatter.setNumberLines(System.err)
+        formatter.setIdentationStr()
+        formatter.autoIndent(System.out)
+        formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''Error: 1 IF missed
+        capture.toString() == '''FOR I=0 TO 10
+....PRINT I
+NEXT
+ENDIF
+Error: 1 IF missed
 '''
     }
 }
+
+interface MockConsole {
+    String readLine(String fmt, Object... args)
+
+    String readLine()
+
+    char[] readPassword(String fmt, Object... args)
+
+    char[] readPassword()
+}
+
