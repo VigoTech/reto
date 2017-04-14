@@ -9,26 +9,36 @@ module.exports = (src) => {
   let errors = [];
 
   const blocks = [
-    { open: 'IF', close: 'ENDIF', opened: 0, lastOpenLine: null },
-    { open: 'FOR', close: 'NEXT', opened: 0, lastOpenLine: null },
+    { open: 'IF', close: 'ENDIF', instances: [] },
+    { open: 'FOR', close: 'NEXT', instances: [] },
   ];
+
+  const previousOpenedBlock = () => {
+    let lastOpenedBlock = null;
+    blocks.map((b) => b.instances.map((line) => {
+      if (line > lastOpenedBlock || lastOpenedBlock === null) lastOpenedBlock = b.open
+    }));
+    return lastOpenedBlock;
+  }
 
   const closeBlock = (b) => {
     indentLevel--;
-    b.opened--;
-    if (b.opened < 0) errors.push(`Line ${currentLine}: Closing unopened ${b.open}`);
+    if (b.instances.length < 1) {
+      errors.push(`Line ${currentLine}: Closing unopened ${b.open}`);
+    } else if (previousOpenedBlock() !== b.open) {
+      errors.push(`Line ${currentLine}: Closing ${b.open} but ${previousOpenedBlock()} still open`)
+    }
+    b.instances.pop();
   }
 
   const openBlock = (b) => {
     indentLevel++;
-    b.opened++;
-    b.lastOpenLine = currentLine;
+    b.instances.push(currentLine);
   }
 
   const indent = () => Array((indentLevel > 0 ? indentLevel : 0) * indentRules.length + 1).join(indentRules.char)
 
-  let lines = src
-    .split("\n").splice(2)
+  let lines = src.split("\n").splice(2)
     .map((i) => i.replace(new RegExp(/^(·|»)*/), ''))
     .map((i) => {
       currentLine++;
@@ -39,7 +49,9 @@ module.exports = (src) => {
     });
 
   blocks.map((b) => {
-    if (b.opened > 0) { errors.push(`Unclosed ${b.open} opened on line ${b.lastOpenLine}`) }
+    b.instances.map((i) => {
+      if (b.instances.length > 0) { errors.push(`Unclosed ${b.open} opened on line ${i}`) }
+    })
   });
 
   if (errors.length > 0) {

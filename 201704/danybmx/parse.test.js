@@ -9,7 +9,7 @@ test('Correct code should be indented correctly', () => {
 test('Code with unclosed IF should throw an error', () => {
   expect(() => {
     parse(fs.readFileSync('test/resources/ko_1.sample', 'UTF-8'))
-  }).toThrowError('Unclosed IF opened on line 2');
+  }).toThrowError('Line 4: Closing FOR but IF still open, Unclosed IF opened on line 2');
 });
 
 test('Code with unclosed IF and FOR should throw an error', () => {
