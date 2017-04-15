@@ -40,9 +40,8 @@ public class Main {
                     } else {
                         System.err.println("Closing FOR block without opening it before");
                     }
-                }
-
-                if (line.startsWith("ENDIF")) {
+                    
+                } else if (line.startsWith("ENDIF")) {
                     if (indentBlock.lastIndexOf("IF") >= 0) {
                         if (indentBlock.lastIndexOf("IF") == indentBlock.size() - 1) {
                             indentBlock.remove(indentBlock.size() - 1);
@@ -51,7 +50,7 @@ public class Main {
                             System.err.println("Closing IF block without closing inner FOR block");
 
                             int lastIndex = indentBlock.size() - 1;
-                            int blockIndex = indentBlock.lastIndexOf("FOR");
+                            int blockIndex = indentBlock.lastIndexOf("IF");
                             for (int j = lastIndex; j >= blockIndex; j--) {
                                 indentBlock.remove(j);
                             }
@@ -60,8 +59,8 @@ public class Main {
                     } else {
                         System.err.println("Closing IF block without opening it before");
                     }
-
                 }
+
                 System.out.print(String.join("", Collections.nCopies(indentBlock.size(), indentText))); // Prints the indentation
                 System.out.println(line); // Prints the code
 
