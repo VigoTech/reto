@@ -29,3 +29,4 @@ Ver [201704/README.md](201704/README.md)
 - Solución en Python de [@migonzalvar](https://github.com/migonzalvar): https://github.com/vigojug/reto/pull/5
 - Solución en JS de [@danybmx](https://github.com/danybmx): https://github.com/vigojug/reto/pull/6
 - Solución en Groovy de [@antonmry](https://github.com/antonmry): https://github.com/vigojug/reto/pull/7
+- Solución en Java de [@kix2902](https://github.com/kix2902): https://github.com/vigojug/reto/pull/8
