@@ -24,9 +24,10 @@ Ver [201704/README.md](201704/README.md)
 
 ### PRs para votar:
 
-- Solución en Scala de [@rubenrua](https://github.com/rubenrua): https://github.com/vigojug/reto/pull/2
-- Solución en Kotlin de [@albertoruibal](https://github.com/albertoruibal): https://github.com/vigojug/reto/pull/4
-- Solución en Python de [@migonzalvar](https://github.com/migonzalvar): https://github.com/vigojug/reto/pull/5
-- Solución en JS de [@danybmx](https://github.com/danybmx): https://github.com/vigojug/reto/pull/6
-- Solución en Groovy de [@antonmry](https://github.com/antonmry): https://github.com/vigojug/reto/pull/7
-- Solución en Java de [@kix2902](https://github.com/kix2902): https://github.com/vigojug/reto/pull/8
+- [@rubenrua](https://github.com/rubenrua) en Scala: https://github.com/vigojug/reto/pull/2
+- [@albertoruibal](https://github.com/albertoruibal) en Kotlin: https://github.com/vigojug/reto/pull/4
+- [@migonzalvar](https://github.com/migonzalvar) en Python: https://github.com/vigojug/reto/pull/5
+- [@danybmx](https://github.com/danybmx) en JS: https://github.com/vigojug/reto/pull/6
+- [@antonmry](https://github.com/antonmry) en Groovy: https://github.com/vigojug/reto/pull/7
+- [@kix2902](https://github.com/kix2902) en Java: https://github.com/vigojug/reto/pull/8
+- [@saulmm](https://github.com/saulmm) Solución en Java Rx de : https://github.com/vigojug/reto/pull/9
