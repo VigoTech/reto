@@ -13,10 +13,12 @@ import groovy.transform.TypeCheckingMode
 class BasicFormatter {
 
     String indentationStr = ''
+    List blocks = []
     int numberLines = 0
     int indentFor = 0
     int indentIf = 0
     final String lineSeparator = System.getProperty('line.separator')
+
     // Used to make easier unit testing
     def console
 
@@ -67,10 +69,12 @@ class BasicFormatter {
 
             if (input.startsWith('ENDIF')) {
                 indentIf--
+                blocks << ['ENDIF', indentIf + indentFor]
             }
 
             if (input.startsWith('NEXT')) {
                 indentFor--
+                blocks << ['NEXT', indentIf + indentFor]
             }
 
             if (indentIf + indentFor > 0) {
@@ -80,37 +84,77 @@ class BasicFormatter {
             }
 
             if (input.startsWith('FOR')) {
+                blocks << ['FOR', indentIf + indentFor]
                 indentFor++
             }
 
             if (input.startsWith('IF')) {
+                blocks << ['IF', indentIf + indentFor]
                 indentIf++
             }
         }
-
     }
 
     // Validate BASIC source code previously auto-indented with autoIndent
     // and print errors in the output parameter.
+    @CompileStatic(value = TypeCheckingMode.SKIP)
     boolean validateSourceCode(PrintStream output) {
 
-        if (indentIf > 0) {
-            output << "Error: $indentIf ENDIF missed" << lineSeparator
-        } else if (indentIf < 0) {
-            output << "Error: ${indentIf.abs()} IF missed" << lineSeparator
+        if (blocks.empty) {
+            autoIndent(null)
         }
 
-        if (indentFor > 0) {
-            output << "Error: $indentFor NEXT missed" << lineSeparator
-        } else if (indentFor < 0) {
-            output << "Error: ${indentFor.abs()} FOR missed" << lineSeparator
+        Map b = blocks.countBy {
+            [it[0], it[1]]
+        }
+
+        b.each() { key, value ->
+            switch (key[0]) {
+                case 'IF':
+                    if (!b.containsKey(['ENDIF', key[1]]) && indentIf > 0) {
+                        output << "Error: ENDIF missed, identation $value" << lineSeparator
+                        break
+                    }
+
+                    if (b[['ENDIF', key[1]]] != value && indentFor == 0 && indentIf == 0) {
+                        output << "Error: block IF not properly closed" << lineSeparator
+                    }
+                    break
+
+                case 'FOR':
+                    if ((!b.containsKey(['NEXT', key[1]])) && indentFor > 0) {
+                        output << "Error: NEXT missed, identation $value" << lineSeparator
+                        break
+                    }
+
+                    if (b[['NEXT', key[1]]] != value && indentFor == 0 && indentIf == 0) {
+                        output << "Error: block FOR not properly closed" << lineSeparator
+                    }
+                    break
+
+                case 'ENDIF':
+                    if (!b.containsKey(['IF', key[1]]) && indentIf < 0) {
+                        output << "Error: IF missed, identation $value" << lineSeparator
+                    }
+                    break
+
+                case 'NEXT':
+                    if (!b.containsKey(['FOR', key[1]]) && indentFor < 0) {
+                        output << "Error: FOR missed, identation $value" << lineSeparator
+                    }
+                    break
+
+                default:
+                    assert false: "This block shouldn't be executed, there is a bug in the code"
+                    break
+            }
         }
 
     }
 
     // Utility method to make easier to mock the console in Unit Tests
     // Sources: http://stackoverflow.com/questions/20789662/test-groovy-class-that-uses-system-console
-    @CompileStatic(value=TypeCheckingMode.SKIP)
+    @CompileStatic(value = TypeCheckingMode.SKIP)
     private String getInput(String prompt, String defValue) {
         String input = (console.readLine(prompt, null).trim() ?: defValue)?.toString()
         input

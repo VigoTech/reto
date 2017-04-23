@@ -6,6 +6,8 @@ import org.springframework.boot.test.OutputCapture
 
 class BasicFormatterSpec extends Specification {
 
+    final String lineSeparator = System.getProperty('line.separator')
+
     @org.junit.Rule
     OutputCapture capture = new OutputCapture()
 
@@ -78,11 +80,12 @@ NEXT
         formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''FOR I=0 TO 10
+        lineSeparator + capture.toString() == '''
+FOR I=0 TO 10
 ....IF I MOD 2 THEN
 ........PRINT I
 ....NEXT
-Error: 1 ENDIF missed
+Error: ENDIF missed, identation 1
 '''
     }
 
@@ -108,11 +111,12 @@ FOR I=0 TO 10
         formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''FOR I=0 TO 10
+        lineSeparator + capture.toString() == '''
+FOR I=0 TO 10
 ....IF I MOD 2 THEN
 ........PRINT I
-Error: 1 ENDIF missed
-Error: 1 NEXT missed
+Error: NEXT missed, identation 1
+Error: ENDIF missed, identation 1
 '''
 
     }
@@ -140,11 +144,12 @@ ENDIF
         formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''FOR I=0 TO 10
+        lineSeparator + capture.toString() == '''
+FOR I=0 TO 10
 .....PRINT I
 ENDIF
-Error: 1 IF missed
-Error: 1 NEXT missed
+Error: NEXT missed, identation 1
+Error: IF missed, identation 1
 '''
     }
 
@@ -171,14 +176,53 @@ ENDIF
         formatter.validateSourceCode(System.err)
 
         then:
-        capture.toString() == '''FOR I=0 TO 10
+        lineSeparator + capture.toString() == '''
+FOR I=0 TO 10
 ....PRINT I
 NEXT
 ENDIF
-Error: 1 IF missed
+Error: IF missed, identation 1
+'''
+    }
+
+    def "BASIC indentation fails because block not properly closed"() {
+        given:
+        def input = '''6
+....
+VAR I
+·FOR I=1 TO 31
+»»»»IF !(I MOD 3) THEN
+··PRINT "FIZZ"
+NEXT
+··»»ENDIF
+'''
+
+        def consoleMock = GroovyMock(MockConsole)
+        input.eachLine {
+            1 * consoleMock.readLine(_, null) >> it
+        }
+
+        when:
+        def formatter = new BasicFormatter(consoleMock)
+        formatter.setNumberLines(System.err)
+        formatter.setIdentationStr()
+        formatter.autoIndent(System.out)
+        formatter.validateSourceCode(System.err)
+
+        then:
+        lineSeparator + capture.toString() == '''
+VAR I
+FOR I=1 TO 31
+....IF !(I MOD 3) THEN
+........PRINT "FIZZ"
+....NEXT
+ENDIF
+Error: block FOR not properly closed
+Error: block IF not properly closed
 '''
     }
 }
+
 
 interface MockConsole {
     String readLine(String fmt, Object... args)
