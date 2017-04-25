@@ -1,9 +1,6 @@
 module DinoSetoSpace
   def self.autoindent(input)
     current_indent = 0
-    open_op = ['FOR', 'IF']
-    close_op = ['ENDIF', 'NEXT']
-
     indent = input[1].length - 1
     indent_with = input[1][0]
 
