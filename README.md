@@ -32,3 +32,4 @@ Ver [201704/README.md](201704/README.md)
 - [@kix2902](https://github.com/kix2902) en Java: https://github.com/vigojug/reto/pull/8
 - [@saulmm](https://github.com/saulmm) en Java Rx: https://github.com/vigojug/reto/pull/9
 - [@felixgomez](https://github.com/felixgomez) en PHP: https://github.com/vigojug/reto/pull/10
+- [@carlosgoce](https://github.com/carlosgoce) en Ruby: https://github.com/vigojug/reto/pull/11/files
