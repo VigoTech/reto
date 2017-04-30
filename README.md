@@ -2,7 +2,7 @@
 
 O reto é un exercicio de programación curto (uns 30 minutos) que se propón despois de cada meetup do VigoJUG. O gañador presenta na seguinte meetup a solución o reto e, se lle apetece, propón o reto do seguinte mes.
 
-Se queres participar pero tes dubidas, contacta no canal #VigoJUG do [PHPVigo](http://phpvigo.com) e terás axuda da organización. 
+Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech Alliance](http://vigotech.org) e terás axuda da organización. 
 
 ## Normas
 
