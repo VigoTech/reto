@@ -1,0 +1,22 @@
+{
+  "name": "Reto VigoJUG 201704",
+  "description": "Symfony Console Component",
+  "homepage": "https://github.com/vigojug/reto/tree/master/201704",
+  "authors": [
+    {
+      "name": "Félix Gómez López",
+      "email": "felix.gomez.lopez@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "DinoSetoSpace\\": "src/"
+    }
+  },
+  "require": {
+    "symfony/console": "^3.2"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.1"
+  }
+}
