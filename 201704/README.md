@@ -99,4 +99,4 @@ ENDIF
 
 # Source / Fonte 
 
-Será desvelado unha vez rematado o reto.
+https://www.reddit.com/r/dailyprogrammer/comments/4lpygb/20160530_challenge_269_easy_basic_formatting/
