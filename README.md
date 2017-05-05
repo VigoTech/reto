@@ -12,7 +12,7 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech A
 
 - Este README se actualizará cas novas PRs para que sexa doado revisalas.
 
-- Antes dunha semana da data do meetup, se poñerán as catro PRs con máis :+1: nunha enquisa no [Twitter do VigoJUG](https://twitter.com/VigoJUG).
+- Antes dunha semana da data do meetup, se poñerán as PRs nunha enquisa no [Meetup do VigoJUG](https://www.meetup.com/Vigo-JUG/polls/).
 
 - A solución máis votada será a gañadora e a que presentará o reto na Meetup. Se non pode acudir, o fará a seguinte máis votada.
 
