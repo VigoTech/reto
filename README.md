@@ -20,7 +20,7 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech A
 
 ## Reto Maio 2017: data límite luns 29 de Maio as 21:00
 
-Ver [201705/README.md](201704/README.md)
+Ver [201705/README.md](201705/README.md)
 
 ### PRs para votar:
 
