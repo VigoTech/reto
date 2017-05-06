@@ -1,11 +1,11 @@
 import pytest
 
-from reto import check_opposite_number_in, check_adding_elements
+from reto import check_adding_elements
 
 
 @pytest.mark.parametrize('int_list, result', [
     ([1, 2, 3], False),
-    ([-5, -3, -1, 2, 4, 6], False),
+    ([-5, -3, -1, 2, 4, 6], True),
     ([], False),
     ([-1, 1], True),
     ([-97364, -71561, -69336, 19675, 71561, 97863], True),
@@ -13,7 +13,7 @@ from reto import check_opposite_number_in, check_adding_elements
     ([-2, 2, 3], True),
 ])
 def test_examples(int_list, result):
-    assert check_opposite_number_in(int_list) == result
+    assert check_adding_elements(int_list) == result
 
 
 @pytest.mark.parametrize('int_list, result', [
@@ -42,7 +42,7 @@ def test_optional_bonus_examples(int_list, result):
 
 
 @pytest.mark.parametrize('int_list, result', [
-    ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], False),
+    ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30], False),
 ])
 def test_optional_bonus_2(int_list, result):
     assert check_adding_elements(int_list) == result
