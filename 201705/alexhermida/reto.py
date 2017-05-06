@@ -1,4 +1,4 @@
-from itertools import accumulate
+from itertools import combinations
 
 
 def check_opposite_number_in(integers_list):
@@ -11,11 +11,8 @@ def check_opposite_number_in(integers_list):
 
 
 def check_adding_elements(integers_list):
-    list_copy = integers_list[:]
-
-    if 0 in list(accumulate(list_copy)):
+    if [item for i in range(len(integers_list), 0, -1) for item in
+            combinations(integers_list, i) if sum(item) == 0]:
         return True
 
-    for item in list_copy:
-        if check_opposite_number_in(item, integers_list):
-            return True
+    return False
