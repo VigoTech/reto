@@ -6,36 +6,26 @@ import (
 	"time"
 )
 
-func doOperations(x int, nNumbers int, numbers []int) <-chan int {
-	out := make(chan int)
-	go func(x int, nNumbers int, numbers []int) {
-		option := strconv.FormatInt(int64(x+1), 2)
-		nOption := len(option)
-		result := 0
-		for i := nOption - 1; i >= 0; i-- {
-			if string(option[i]) == "1" {
-				result += numbers[nNumbers-nOption+i]
-			}
-		}
-		out <- result
-		close(out)
-	}(x, nNumbers, numbers)
-	return out
-}
-
-func hasZeroSetConcurrent(numbers []int) (bool, float64) {
+func hasZeroSet(numbers []int) (result bool, elapsed float64) {
 	start := time.Now()
 	nNumbers := len(numbers)
 	nOptions := int(math.Pow(2, float64(nNumbers))) - 1
-	if nOptions > 0 {
+	result = false
+	if nOptions > 0 && !result {
 		for x := 0; x < nOptions; x++ {
-			result := doOperations(x, nNumbers, numbers)
-			for res := range result {
-				if res == 0 {
-					return true, time.Since(start).Seconds()
+			sum := 0
+			option := strconv.FormatInt(int64(x+1), 2)
+			offset := nNumbers - len(option)
+			for z := 0; z < nNumbers; z++ {
+				if offset-1 < z && option[z-offset] == 49 {
+					sum += numbers[z]
 				}
+			}
+			if sum == 0 {
+				result = true
 			}
 		}
 	}
-	return false, time.Since(start).Seconds()
+	elapsed = time.Since(start).Seconds()
+	return
 }

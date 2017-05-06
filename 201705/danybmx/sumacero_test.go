@@ -30,7 +30,7 @@ var KOTests = [][]int{
 
 func TestOK(t *testing.T) {
 	for _, numbers := range OKTests {
-		result, elapsed := hasZeroSetConcurrent(numbers)
+		result, elapsed := hasZeroSet(numbers)
 		t.Log(len(numbers), "numbers processed in ", elapsed, "s")
 		if result != true {
 			t.Error(
@@ -44,7 +44,7 @@ func TestOK(t *testing.T) {
 
 func TestKO(t *testing.T) {
 	for _, numbers := range KOTests {
-		result, elapsed := hasZeroSetConcurrent(numbers)
+		result, elapsed := hasZeroSet(numbers)
 		t.Log(len(numbers), "numbers processed in ", elapsed, "s")
 		if result != false {
 			t.Error(
@@ -58,7 +58,7 @@ func TestKO(t *testing.T) {
 
 func TestBigSet_25(t *testing.T) {
 	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478}
-	result, elapsed := hasZeroSetConcurrent(numbers)
+	result, elapsed := hasZeroSet(numbers)
 	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
 	if elapsed >= float64(300) {
 		t.Error(
@@ -78,7 +78,7 @@ func TestBigSet_25(t *testing.T) {
 
 func TestBigSet_26(t *testing.T) {
 	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378}
-	result, elapsed := hasZeroSetConcurrent(numbers)
+	result, elapsed := hasZeroSet(numbers)
 	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
 	if elapsed >= float64(300) {
 		t.Error(
@@ -98,7 +98,7 @@ func TestBigSet_26(t *testing.T) {
 
 func TestBigSet_27(t *testing.T) {
 	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958}
-	result, elapsed := hasZeroSetConcurrent(numbers)
+	result, elapsed := hasZeroSet(numbers)
 	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
 	if elapsed >= float64(300) {
 		t.Error(
@@ -118,7 +118,87 @@ func TestBigSet_27(t *testing.T) {
 
 func TestBigSet_28(t *testing.T) {
 	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061}
-	result, elapsed := hasZeroSetConcurrent(numbers)
+	result, elapsed := hasZeroSet(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_29(t *testing.T) {
+	numbers := []int{-83314, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061}
+	result, elapsed := hasZeroSet(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_30(t *testing.T) {
+	numbers := []int{-83314, -83314, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061}
+	result, elapsed := hasZeroSet(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_31(t *testing.T) {
+	numbers := []int{-83314, -83314, -83314, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061}
+	result, elapsed := hasZeroSet(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_32(t *testing.T) {
+	numbers := []int{-83314, -83314, -83314, -83314, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061}
+	result, elapsed := hasZeroSet(numbers)
 	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
 	if elapsed >= float64(300) {
 		t.Error(
