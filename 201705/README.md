@@ -6,7 +6,7 @@ Dada unha lista ordenada de enteiros, escribir unha función que devolva si hai 
 
 Luns 29 de Maio as 21:00
 
-## Exemplos 
+## Exemplos
 
 ```
 [1, 2, 3] -> false
@@ -15,6 +15,7 @@ Luns 29 de Maio as 21:00
 [-1, 1] -> true
 [-97364, -71561, -69336, 19675, 71561, 97863] -> true
 [-53974, -39140, -36561, -23935, -15680, 0] -> true
+[-2, 2, 3] -> true
 ```
 
 ## Bonus opcional
@@ -31,7 +32,7 @@ Exemplos de subconxuntos que suman 0:
 
 É dicir, se calquera deses conxuntos aparece na entrada, debería devolver `true`.
 
-## Exemplos do bonus 
+## Exemplos do bonus
 
 Os seguintes deberían devolver `false`:
 
@@ -58,6 +59,6 @@ Os seguintes deberían devolver `true`:
 Calcula o maior conxunto que a tua solución é capaz de procesar en menos de 300 segundos. Añadeo como proba unitaria e publica nun README.md o dato.
 
 
-# Source / Fonte 
+# Source / Fonte
 
 Desvelarase o final do reto.
