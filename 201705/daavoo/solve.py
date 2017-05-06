@@ -92,8 +92,10 @@ if __name__ == '__main__':
     import pickle
     with open("test_cases_no_bonus.pk", "rb") as f:
         test_cases = pickle.load(f)
+
+    NUM = 0
     for case in test_cases:
         print(case[0], case[1])
-        assert exist_subset(case[0], 0, impossible_1, deque_solver) == case[1]
+        assert exist_subset(case[0], NUM, impossible_1, deque_solver) == case[1]
 
     print("\nAll test cases passed\n")
