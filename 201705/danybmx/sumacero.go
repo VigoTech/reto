@@ -39,7 +39,6 @@ func hasZeroSetConcurrent(numbers []int) (bool, float64) {
 
 	for x := 0; x < nOptions; x++ {
 		result := doOperations(pad, x, nNumbers, numbers)
-
 		for res := range result {
 			if res == 0 {
 				return true, time.Since(start).Seconds()

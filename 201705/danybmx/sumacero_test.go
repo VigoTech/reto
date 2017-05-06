@@ -9,6 +9,7 @@ var OKTests = [][]int{
 	{-2, 2, 3},
 	{0},
 	{-3, 1, 2},
+	{-5, -3, -1, 2, 4, 6},
 	{-98634, -86888, -48841, -40483, 2612, 9225, 17848, 71967, 84319, 88875},
 	{-97162, -95761, -94672, -87254, -57207, -22163, -20207, -1753, 11646, 13652, 14572, 30580, 52502, 64282, 74896, 83730, 89889, 92200},
 	{-93976, -93807, -64604, -59939, -44394, -36454, -34635, -16483, 267, 3245, 8031, 10622, 44815, 46829, 61689, 65756, 69220, 70121},
@@ -19,21 +20,12 @@ var OKTests = [][]int{
 
 var KOTests = [][]int{
 	{1, 2, 3},
-	{-5, -3, -1, 2, 4, 6},
 	{},
 	{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055},
 	{-92953, -91613, -89733, -50673, -16067, -9172, 8852, 30883, 46690, 46968, 56772, 58703, 59150, 78476, 84413, 90106, 94777, 95148},
 	{-94624, -86776, -85833, -80822, -71902, -54562, -38638, -26483, -20207, -1290, 12414, 12627, 19509, 30894, 32505, 46825, 50321, 69294},
 	{-83964, -81834, -78386, -70497, -69357, -61867, -49127, -47916, -38361, -35772, -29803, -15343, 6918, 19662, 44614, 66049, 93789, 95405},
 	{-68808, -58968, -45958, -36013, -32810, -28726, -13488, 3986, 26342, 29245, 30686, 47966, 58352, 68610, 74533, 77939, 80520, 87195},
-}
-
-// The hasZeroSetConcurrent should return true when it found the first 0 so we need to make all those tests KO
-var BigSetsTests = [][]int{
-	{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478},
-	{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378},
-	{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958},
-	{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061},
 }
 
 func TestOK(t *testing.T) {
@@ -64,23 +56,82 @@ func TestKO(t *testing.T) {
 	}
 }
 
-func TestBigSets(t *testing.T) {
-	for _, numbers := range BigSetsTests {
-		result, elapsed := hasZeroSetConcurrent(numbers)
-		t.Log(len(numbers), "numbers processed in ", elapsed, "s")
-		if elapsed >= float64(300) {
-			t.Error(
-				"For", numbers,
-				"expected to resolve in less than", "300s",
-				"got", elapsed,
-			)
-		}
-		if result != false {
-			t.Error(
-				"For", numbers,
-				"expected", false,
-				"got", result,
-			)
-		}
+func TestBigSet_25(t *testing.T) {
+	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478}
+	result, elapsed := hasZeroSetConcurrent(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_26(t *testing.T) {
+	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378}
+	result, elapsed := hasZeroSetConcurrent(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_27(t *testing.T) {
+	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958}
+	result, elapsed := hasZeroSetConcurrent(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
+	}
+}
+
+func TestBigSet_28(t *testing.T) {
+	numbers := []int{-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055, -83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061}
+	result, elapsed := hasZeroSetConcurrent(numbers)
+	t.Log(len(numbers), "numbers processed in ", elapsed, "s")
+	if elapsed >= float64(300) {
+		t.Error(
+			"For", numbers,
+			"expected to resolve in less than", "300s",
+			"got", elapsed,
+		)
+	}
+	if result != false {
+		t.Error(
+			"For", numbers,
+			"expected", false,
+			"got", result,
+		)
 	}
 }
