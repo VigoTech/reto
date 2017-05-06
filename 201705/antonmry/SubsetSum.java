@@ -10,7 +10,7 @@ import static junit.framework.TestCase.assertEquals;
 public class SubsetSum {
 
     final private static boolean DEBUG = false;
-    final private static int MAX_ACHIEVED = 17;
+    final private static int MAX_ACHIEVED = 100000;
 
     @Test
     public void simplifiedSubsetSumSpec() {
@@ -125,7 +125,7 @@ public class SubsetSum {
     }
 
     @Test(timeout = 300000)
-    public void bonusSubsetSumNinetyRecordsFalseSpec() {
+    public void bonusSubsetSumMaxNumRecordsFalseSpec() {
 
         int[] array = IntStream.rangeClosed(1, MAX_ACHIEVED).toArray();
 
@@ -139,10 +139,9 @@ public class SubsetSum {
         assertEquals(getSubsetSum(test), false);
 
         long elapsed = System.currentTimeMillis() - start;
-        System.out.println("bonusSubsetSumNinetyRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
+        System.out.println("bonusSubsetMaxNumRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
-    @Ignore
     @Test
     public void calculateMaxRange5minutes() {
 
@@ -225,12 +224,12 @@ public class SubsetSum {
 
                 if (r == K - 1) {
 
-                    ArrayList<Integer> arrayList = new ArrayList<>(combination.length);
+                    int sum = 0;
                     for (int z = 0; z < combination.length; z++) {
-                        arrayList.add((Integer) elements[combination[z]]);
+                        sum += (int) elements[combination[z]];
                     }
 
-                    if (calculateSubsetSum(arrayList)) {
+                    if (sum == 0) {
                         return true;
                     }
 
@@ -250,47 +249,5 @@ public class SubsetSum {
         return false;
     }
 
-    private boolean calculateSubsetSum(ArrayList<Integer> arrayList) {
-        if (DEBUG) {
-            System.out.print("> New array: ");
-            arrayList.stream().forEach(d -> System.out.print(d + " "));
-            System.out.println();
-        }
-
-        if (arrayList.size() == 0) {
-            return false;
-        }
-
-        if (arrayList.size() == 1) {
-            return arrayList.get(0).equals(Integer.valueOf(0));
-        }
-
-        for (int i = 0; i < arrayList.size(); i++) {
-            for (int j = arrayList.size() - 1; j >= i; j--) {
-                ArrayList<Integer> subArrayList = new ArrayList<>(arrayList.subList(i, j));
-
-                int newRecord = arrayList.subList(0, i).stream().mapToInt(Integer::intValue).sum() +
-                        arrayList.subList(j, arrayList.size()).stream().mapToInt(Integer::intValue).sum();
-
-                if (newRecord != 0) {
-                    subArrayList.add(newRecord);
-                }
-
-                if (DEBUG) {
-                    System.out.print(">> New sub array: ");
-                    subArrayList.stream().forEach(d -> System.out.print(d + " "));
-                    System.out.println();
-                }
-
-                if ((subArrayList.size() > 1) && subArrayList.stream()
-                        .anyMatch(n1 -> subArrayList.stream()
-                                .anyMatch(n2 -> n1 + n2 == 0))) {
-                    return true;
-                }
-            }
-        }
-        return false;
-
-    }
 }
 
