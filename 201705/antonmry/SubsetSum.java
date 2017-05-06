@@ -1,16 +1,22 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.stream.IntStream;
 
 import org.junit.Ignore;
 import org.junit.Test;
 
+import static java.lang.Thread.sleep;
 import static junit.framework.TestCase.assertEquals;
 
 public class SubsetSum {
 
     final private static boolean DEBUG = false;
-    final private static int MAX_ACHIEVED = 100000;
+    final private static int MAX_ACHIEVED = 30;
+    protected static ConcurrentHashMap<Integer, Boolean> results = new ConcurrentHashMap<Integer, Boolean>();
 
     @Test
     public void simplifiedSubsetSumSpec() {
@@ -104,6 +110,7 @@ public class SubsetSum {
         assertEquals(getSubsetSum(test10), true);
     }
 
+    @Ignore
     @Test
     public void bonusSubsetSumNinetyRecordsTrueSpec() {
         ArrayList<Integer> test1 = new ArrayList<>(Arrays.asList(-83314, -82838, -80120, -63468, -62478, -59378,
@@ -142,6 +149,7 @@ public class SubsetSum {
         System.out.println("bonusSubsetMaxNumRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
+    @Ignore
     @Test
     public void calculateMaxRange5minutes() {
 
@@ -193,23 +201,56 @@ public class SubsetSum {
             return arrayList.get(0).equals(Integer.valueOf(0));
         }
 
-        for (int h = 1; h < arrayList.size() + 1; h++) {
-            Integer[] elements = new Integer[arrayList.size()];
-            elements = arrayList.toArray(elements);
-            if (generateAllSubArrays(elements, h)) {
-                return true;
+        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+
+        class OneShotTask implements Runnable {
+            Object[] elements;
+            int K;
+
+            OneShotTask(Object[] elementsParam, int KParam) {
+                elements = elementsParam;
+                K = KParam;
+            }
+
+            public void run() {
+                try {
+                    generateAllSubArrays(elements, K);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    System.exit(-1);
+                }
             }
         }
-        return false;
+
+        for (int h = 1; h <= arrayList.size(); h++) {
+            Integer[] elements = new Integer[arrayList.size()];
+            elements = arrayList.toArray(elements);
+            executorService.execute(new OneShotTask(elements, h));
+        }
+
+        while (results.size() < arrayList.size()) {
+            try {
+                sleep(500);
+                if (results.entrySet().stream().anyMatch(entry -> entry.getValue() == true)) {
+                    break;
+                }
+            } catch (InterruptedException e) {
+                break;
+            }
+        }
+        executorService.shutdown();
+        boolean result = results.entrySet().stream().anyMatch(entry -> entry.getValue() == true);
+        results.clear();
+        return result;
     }
 
-    private boolean generateAllSubArrays(Object[] elements, int K) {
+    private boolean generateAllSubArrays(Object[] elements, int K) throws Exception {
 
         int N = elements.length;
 
         if (K > N) {
             System.out.println("Invalid input, K > N");
-            return false;
+            throw new Exception("Condition unexpected");
         }
 
         int combination[] = new int[K];
@@ -230,7 +271,23 @@ public class SubsetSum {
                     }
 
                     if (sum == 0) {
+                        results.put(Integer.valueOf(K), Boolean.valueOf(true));
+                        if (DEBUG) {
+                            String output = "";
+                            for(int z = 0 ; z < combination.length;z++){
+                                output += elements[combination[z]] + "_";
+                            }
+                            System.out.println("TRUE: " + output);
+                        }
                         return true;
+                    }
+
+                    if (DEBUG) {
+                        String output = "";
+                        for(int z = 0 ; z < combination.length;z++){
+                            output += elements[combination[z]] + "_";
+                        }
+                        System.out.println("FALSE: " + output);
                     }
 
                     index++;
@@ -246,8 +303,15 @@ public class SubsetSum {
                     index = combination[0] + 1;
             }
         }
+        results.put(Integer.valueOf(K), Boolean.valueOf(false));
+        if (DEBUG) {
+            String output = "";
+            for(int z = 0 ; z < combination.length;z++){
+                output += elements[combination[z]] + "_";
+            }
+            System.out.println("FALSE: " + output);
+        }
         return false;
     }
-
 }
 
