@@ -32,6 +32,8 @@ Exemplos de subconxuntos que suman 0:
 
 É dicir, se calquera deses conxuntos aparece na entrada, debería devolver `true`.
 
+Nota: o exemplo `[-5, -3, -1, 2, 4, 6] -> false` do reto pasa a `true` co bonus.
+
 ## Exemplos do bonus
 
 Os seguintes deberían devolver `false`:
@@ -64,7 +66,16 @@ Por exemplo, está sería unha boa proba:
 [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] -> false
 ```
 
-Aumenta o número de forma consecutiva ata encontrar o límite da tua solución.
+Aumenta o número de forma consecutiva ata encontrar o límite da tua solución:
+
+```
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21] -> false
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22] -> false
+...
+
+```
+
+
 
 # Source / Fonte
 
