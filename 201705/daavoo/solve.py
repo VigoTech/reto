@@ -39,6 +39,8 @@ def deque_solver(ordered_list, num):
     """
     Brute force approach using collections.dque.
 
+    - Only work for num=0.
+
     Parameters
     ----------
     ordered_list: list of int
