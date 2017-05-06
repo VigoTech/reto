@@ -39,3 +39,10 @@ def test_optional_bonus(int_list, result):
 ])
 def test_optional_bonus_examples(int_list, result):
     assert check_adding_elements(int_list) == result
+
+
+@pytest.mark.parametrize('int_list, result', [
+    ([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20], False),
+])
+def test_optional_bonus_2(int_list, result):
+    assert check_adding_elements(int_list) == result
