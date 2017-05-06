@@ -8,5 +8,10 @@ que é algo que me custa entender.
 Para executalo, soamente necesitas por os ficheiros no teu GOPATH e facer un
 `go test` e se queres ver un pouca máis de información `go test -v`.
 
-En canto ó último bonus, foime imposible pasar de 27 en 300s... como xa dixen
+En canto ó último bonus, foime imposible pasar de 28 en 300s... como xa dixen
 non parece moi eficiente pero foi divertido!.
+
+```
+--- PASS: TestBigSet_28 (249.32s)
+sumacero_test.go:122: 28 numbers processed in  249.319327769 s
+```

@@ -35,7 +35,7 @@ func TestOK(t *testing.T) {
 		if result != true {
 			t.Error(
 				"For", numbers,
-				"expected", false,
+				"expected", true,
 				"got", result,
 			)
 		}
