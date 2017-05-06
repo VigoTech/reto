@@ -4,30 +4,30 @@ Reto JUG Maio 2017
 ```
 $ python3.6 -m venv .venv
 $ source .venv/bin/activate
-(.venv) $ pytest main.py -v
+(.venv) $ pytest test.py -v
 ============================= test session starts =============================
 platform linux -- Python 3.6.0, pytest-3.0.7, py-1.4.33, pluggy-0.4.0 -- /home/migonzalvar/Devel/migonzalvar/misc/vigojug/reto/201705/migonzalvar/.venv/bin/python3.6
 cachedir: .cache
 rootdir: /home/migonzalvar/Devel/migonzalvar/misc/vigojug/reto/201705/migonzalvar, inifile:
 collected 17 items
 
-main.py::test_acceptance_first[source0-False] PASSED
-main.py::test_acceptance_first[source1-False] PASSED
-main.py::test_acceptance_first[source2-False] PASSED
-main.py::test_acceptance_first[source3-True] PASSED
-main.py::test_acceptance_first[source4-True] PASSED
-main.py::test_acceptance_first[source5-True] PASSED
-main.py::test_acceptance_first[source6-True] PASSED
-main.py::test_bonus[False-source0] PASSED
-main.py::test_bonus[False-source1] PASSED
-main.py::test_bonus[False-source2] PASSED
-main.py::test_bonus[False-source3] PASSED
-main.py::test_bonus[False-source4] PASSED
-main.py::test_bonus[True-source5] PASSED
-main.py::test_bonus[True-source6] PASSED
-main.py::test_bonus[True-source7] PASSED
-main.py::test_bonus[True-source8] PASSED
-main.py::test_bonus[True-source9] PASSED
+test.py::test_acceptance_first[source0-False] PASSED
+test.py::test_acceptance_first[source1-False] PASSED
+test.py::test_acceptance_first[source2-False] PASSED
+test.py::test_acceptance_first[source3-True] PASSED
+test.py::test_acceptance_first[source4-True] PASSED
+test.py::test_acceptance_first[source5-True] PASSED
+test.py::test_acceptance_first[source6-True] PASSED
+test.py::test_bonus[False-source0] PASSED
+test.py::test_bonus[False-source1] PASSED
+test.py::test_bonus[False-source2] PASSED
+test.py::test_bonus[False-source3] PASSED
+test.py::test_bonus[False-source4] PASSED
+test.py::test_bonus[True-source5] PASSED
+test.py::test_bonus[True-source6] PASSED
+test.py::test_bonus[True-source7] PASSED
+test.py::test_bonus[True-source8] PASSED
+test.py::test_bonus[True-source9] PASSED
 
 ========================== 17 passed in 0.55 seconds ==========================
 ```
