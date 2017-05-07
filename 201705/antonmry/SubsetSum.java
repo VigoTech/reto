@@ -15,7 +15,7 @@ import static junit.framework.TestCase.assertEquals;
 public class SubsetSum {
 
     final private static boolean DEBUG = false;
-    final private static int MAX_ACHIEVED = 30;
+    final private static int MAX_ACHIEVED = 35;
     protected static ConcurrentHashMap<Integer, Boolean> results = new ConcurrentHashMap<Integer, Boolean>();
 
     @Test
@@ -110,7 +110,6 @@ public class SubsetSum {
         assertEquals(getSubsetSum(test10), true);
     }
 
-    @Ignore
     @Test
     public void bonusSubsetSumNinetyRecordsTrueSpec() {
         ArrayList<Integer> test1 = new ArrayList<>(Arrays.asList(-83314, -82838, -80120, -63468, -62478, -59378,
@@ -131,6 +130,7 @@ public class SubsetSum {
         System.out.println("bonusSubsetSumNinetyRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
+    @Ignore
     @Test(timeout = 300000)
     public void bonusSubsetSumMaxNumRecordsFalseSpec() {
 
@@ -149,7 +149,6 @@ public class SubsetSum {
         System.out.println("bonusSubsetMaxNumRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
-    @Ignore
     @Test
     public void calculateMaxRange5minutes() {
 
