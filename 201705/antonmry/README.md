@@ -4,7 +4,6 @@ Assuming you have jdk8 installed, execute the following commands:
 
 ```
 javac -cp .:hamcrest-core-1.3.jar:junit-4.12.jar SubsetSum.java
-java -cp .:hamcrest-core-1.3.jar:junit-4.12.jar org.junit.runner.JUnitCore SubsetSum
 java -XX:+UseConcMarkSweepGC -XX:+UseParNewGC -cp .:hamcrest-core-1.3.jar:junit-4.12.jar org.junit.runner.JUnitCore SubsetSum
 ```
 
@@ -54,10 +53,10 @@ TODO:
 
 - [x] Improve calculation, using directly subarrays
 - [x] Avoid calc with array of size 1 (really minor improvement, deleted)
-- [ ] Avoid repeated subarrays (order doesn't change the sum)
 - [x] Threads per subarray length
 - [x] Increase the number of threads? -> No
 - [x] Tune GC -> minor impact
-- [ ] Allocation / cast optimization / refactoring 
+- [x] Avoid repeated subarrays -> already done
+- [x] Allocation / cast optimization / refactoring 
 
 

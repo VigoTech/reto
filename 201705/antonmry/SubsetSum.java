@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -14,8 +13,8 @@ import static junit.framework.TestCase.assertEquals;
 
 public class SubsetSum {
 
-    final private static boolean DEBUG = false;
-    final private static int MAX_ACHIEVED = 35;
+    final private static boolean DEBUG = true;
+    final private static int MAX_ACHIEVED = 34;
     protected static ConcurrentHashMap<Integer, Boolean> results = new ConcurrentHashMap<Integer, Boolean>();
 
     @Test
@@ -130,7 +129,6 @@ public class SubsetSum {
         System.out.println("bonusSubsetSumNinetyRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
-    @Ignore
     @Test(timeout = 300000)
     public void bonusSubsetSumMaxNumRecordsFalseSpec() {
 
@@ -149,6 +147,7 @@ public class SubsetSum {
         System.out.println("bonusSubsetMaxNumRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
+    @Ignore
     @Test
     public void calculateMaxRange5minutes() {
 
@@ -203,10 +202,10 @@ public class SubsetSum {
         ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 
         class OneShotTask implements Runnable {
-            Object[] elements;
+            Integer[] elements;
             int K;
 
-            OneShotTask(Object[] elementsParam, int KParam) {
+            OneShotTask(Integer[] elementsParam, int KParam) {
                 elements = elementsParam;
                 K = KParam;
             }
@@ -243,15 +242,9 @@ public class SubsetSum {
         return result;
     }
 
-    private boolean generateAllSubArrays(Object[] elements, int K) throws Exception {
+    private boolean generateAllSubArrays(Integer[] elements, int K)  {
 
         int N = elements.length;
-
-        if (K > N) {
-            System.out.println("Invalid input, K > N");
-            throw new Exception("Condition unexpected");
-        }
-
         int combination[] = new int[K];
 
         int r = 0;
@@ -266,7 +259,7 @@ public class SubsetSum {
 
                     int sum = 0;
                     for (int z = 0; z < combination.length; z++) {
-                        sum += (int) elements[combination[z]];
+                        sum += elements[combination[z]];
                     }
 
                     if (sum == 0) {
@@ -296,21 +289,16 @@ public class SubsetSum {
                 }
             } else {
                 r--;
-                if (r > 0)
+                if (r > 0) {
                     index = combination[r] + 1;
-                else
+                } else {
                     index = combination[0] + 1;
+                }
             }
         }
-        results.put(Integer.valueOf(K), Boolean.valueOf(false));
-        if (DEBUG) {
-            String output = "";
-            for(int z = 0 ; z < combination.length;z++){
-                output += elements[combination[z]] + "_";
-            }
-            System.out.println("FALSE: " + output);
-        }
+        results.put(K, false);
         return false;
     }
+
 }
 
