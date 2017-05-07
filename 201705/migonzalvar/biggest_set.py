@@ -18,8 +18,8 @@ def less_than(secs):
 
 
 def do():
-    for n in range(int(1e8), int(1e9), int(1e7)):
-        source = range(n)
+    for n in range(1, 100, 10):
+        source = range(1, n)
         print(f'Length: {n} items')
         with less_than(300):
             result = has_subset_sum_zero(source)

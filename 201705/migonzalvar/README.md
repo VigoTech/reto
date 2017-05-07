@@ -39,22 +39,31 @@ Con relación ao **Bonus opcional 2**, que pedía:
 
 > Calcula o maior conxunto que a tua solución é capaz de procesar en menos de 300 segundos. Añadeo como proba unitaria e publica nun README.md o dato.
 
-Co meu algoritmo o límite estivo na memoria non en tempo de proceso. Conseguín calcular listas de 130 millóns de elementos (~ 1e8) en msnos de 30 segundos ata esgotar a memoria.
+Unha primeira aproximacióin sitúa o límiete por debaixo dos 30 elementos:
 
 ```
 (.venv) $ ./biggest_set.py
-...
-
-Length: 120000000 items
-Result: True
-Duration: 3.7151079177856445 seconds
+Length: 1 items
+Result: False
+Duration: 1.4066696166992188e-05 seconds
 Continue...
 
-Length: 130000000 items
-Result: True
-Duration: 24.811022996902466 seconds
+Length: 11 items
+Result: False
+Duration: 0.0007650852203369141 seconds
 Continue...
 
-Length: 140000000 items
-[1]    11733 killed     ./biggest_set.py
+Length: 21 items
+Result: False
+Duration: 0.2948458194732666 seconds
+Continue...
+
+Length: 31 items
+Result: False
+Duration: 389.0838415622711 seconds
+Limit reached. Stopping.
 ```
+
+----
+
+Actualización 7-may. A proba para atopar límite para 300 segundos de execución non era correcta porque os conxuntos usados tiñan solución a primeira.
