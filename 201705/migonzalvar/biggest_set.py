@@ -11,7 +11,7 @@ class Duration:
 
 
 @contextmanager
-def less_than(secs):
+def timeit():
     duration = Duration()
     tic = time.time()
     yield duration
@@ -37,17 +37,18 @@ def positive_worst_case(N):
 
 def do():
     strategies = [nosolution_case, negative_worst_case, positive_worst_case]
+    max_seconds = 300
     for strategy in strategies:
         print(f'## Using {strategy.__name__}')
         print()
-        for n in range(1, 100, 10):
+        for n in range(20, 100, 1):
             source = range(1, n)
             print(f'Length: {n} items')
-            with less_than(300) as duration:
+            with timeit() as duration:
                 result = has_subset_sum_zero(source)
                 print(f'Result: {result}')
             print(f'Duration: {duration.elapsed} seconds')
-            if duration.elapsed >= secs:
+            if duration.elapsed >= max_seconds:
                 print('Limit reached. Stopping.')
                 break
             print('Continue searching...')
