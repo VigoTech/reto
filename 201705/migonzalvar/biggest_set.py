@@ -5,11 +5,16 @@ import time
 
 from main import has_subset_sum_zero
 
+class Duration:
+    def __init__(self, elapsed=None):
+        self.elapsed = elapsed
+
 
 @contextmanager
 def less_than(secs):
+    duration = Duration()
     tic = time.time()
-    yield
+    yield duration
     elapsed = time.time() - tic
     print(f'Duration: {elapsed} seconds')
     if elapsed >= secs:
