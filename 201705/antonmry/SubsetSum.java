@@ -13,9 +13,9 @@ import static junit.framework.TestCase.assertEquals;
 
 public class SubsetSum {
 
-    final private static boolean DEBUG = true;
+    final private static boolean DEBUG = false;
     final private static int MAX_ACHIEVED = 34;
-    protected static ConcurrentHashMap<Integer, Boolean> results = new ConcurrentHashMap<Integer, Boolean>();
+    protected ConcurrentHashMap<Integer, Boolean> results = new ConcurrentHashMap<Integer, Boolean>();
 
     @Test
     public void simplifiedSubsetSumSpec() {
@@ -147,7 +147,6 @@ public class SubsetSum {
         System.out.println("bonusSubsetMaxNumRecordsTrueSpec(): elapsed time = " + elapsed + "ms");
     }
 
-    @Ignore
     @Test
     public void calculateMaxRange5minutes() {
 
@@ -179,7 +178,7 @@ public class SubsetSum {
 
     // Solution without bonuses
     public boolean getSimplifiedSubsetSum(ArrayList<Integer> arrayList) {
-        // Note: O(nn) complexity, really inefficient, we are repeating check here
+        // Note, not very efficient, we are repeating check here
         return arrayList.stream().anyMatch(n1 -> arrayList.stream().anyMatch(n2 -> n1 + n2 == 0));
     }
 
@@ -199,7 +198,8 @@ public class SubsetSum {
             return arrayList.get(0).equals(Integer.valueOf(0));
         }
 
-        ExecutorService executorService = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        int nThreads = arrayList.size();
+        ExecutorService executorService = Executors.newFixedThreadPool(nThreads);
 
         class OneShotTask implements Runnable {
             Integer[] elements;
@@ -212,7 +212,9 @@ public class SubsetSum {
 
             public void run() {
                 try {
+
                     generateAllSubArrays(elements, K);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     System.exit(-1);
@@ -220,7 +222,7 @@ public class SubsetSum {
             }
         }
 
-        for (int h = 1; h <= arrayList.size(); h++) {
+        for (int h = 1; h <= arrayList.size() ; h++) {
             Integer[] elements = new Integer[arrayList.size()];
             elements = arrayList.toArray(elements);
             executorService.execute(new OneShotTask(elements, h));
