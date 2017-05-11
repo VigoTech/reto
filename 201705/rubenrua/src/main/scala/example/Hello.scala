@@ -36,8 +36,19 @@ trait RetoTrait {
     }
   }
 
+
+  def power(t: List[Int]): List[Int] = {
+    @annotation.tailrec
+    def pwr(@specialized t: List[Int], @specialized ps: List[Int]): List[Int] = {
+      if (t.isEmpty) ps
+      else pwr(t.tail, (t.head :: ps  ++ (ps.map(_ + t.head))).distinct )
+    }
+    pwr(t, List.empty[Int])
+  }
+
+
   def hasSubsetSumZero(numbers: List[Int]): Boolean = {
-    numbers.toSet[Int].subsets.filter(_.size != 0).map(_.sum).find(_ == 0) match {
+    power(numbers).find(_ == 0) match {
       case None => false
       case _ => true
     }
