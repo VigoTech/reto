@@ -27,11 +27,10 @@ fn check_sum_zero(v: Vec<i32>) -> bool {
 
 fn main() {
     // Main function only for benchmarking Optional bonus 2
+    let start = PreciseTime::now();
     println!("Running optional bonus 2 test...");
 
-    let start = PreciseTime::now();
-
-    let list_1 = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29];
+    let list_1 = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24];
 
     println!("Result: {:?}", check_sum_zero(list_1));
 
@@ -102,13 +101,5 @@ mod tests {
         for list_vector in list_ok.iter() {
             assert_eq!(true, check_sum_zero(list_vector.to_vec()));
         }
-    }
-
-    #[test]
-    fn optional_bonus_2() {
-        let list_1 = vec![1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11];
-
-        assert_eq!(false, check_sum_zero(list_1));
-
     }
 }
