@@ -22,3 +22,15 @@ $ cargo build
 ```
 $ cargo run
 ```
+
+Ahora mismo el límite de elementos en menos de 5 minutos está en 26.
+
+```
+$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.0 secs
+     Running `target/debug/rust`
+Running optional bonus 2 test... with 26 items
+Result: false
+Second to finish: PT205.948475476S
+
+```
