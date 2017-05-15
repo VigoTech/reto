@@ -1,8 +1,4 @@
 module Reto where
-
-createAllSubsets :: [a] -> [[a]]
-createAllSubsets [] = [[]]
-createAllSubsets (x:xs) = createAllSubsets xs ++ map (x:) (createAllSubsets xs)
-
+import Data.List
 getSubsetsSumZero :: (Eq a, Num a) => [a] -> [[a]]
-getSubsetsSumZero = filter ((==0) . sum) . createAllSubsets
+getSubsetsSumZero = filter ((==0) . sum) . subsequences
