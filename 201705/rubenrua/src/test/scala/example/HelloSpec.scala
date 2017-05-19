@@ -58,16 +58,16 @@ class MainAppSpec extends PropSpec with TableDrivenPropertyChecks with Matchers 
 
   property("Corrent bonus challenge") {
     forAll(correntBonusExamples) { set =>
-      Reto.hasSubsetSumZero(set) shouldEqual true
+      Reto.hasSubsetSumZero(set.toArray) shouldEqual true
     }
   }
 
   property("Incorrent bonus challenge") {
     forAll(incorrentBonusExamples) { set =>
-      Reto.hasSubsetSumZero(set) shouldEqual false
+      Reto.hasSubsetSumZero(set.toArray) shouldEqual false
     }
   }
 
   /** Second Bonus challenge test */
-
+  //See main
 }

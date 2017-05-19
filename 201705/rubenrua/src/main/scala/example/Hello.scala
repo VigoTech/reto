@@ -11,7 +11,7 @@ object Reto extends RetoTrait {
       val r = 1 to i
       val start = System.currentTimeMillis();
 
-      hasSubsetSumZero(r.toList)
+      hasSubsetSumZero(r.toArray)
 
       val elapsed = System.currentTimeMillis() - start;
       println("Array with " + i + " records: elapsed time = " + elapsed + "ms");
@@ -36,22 +36,72 @@ trait RetoTrait {
     }
   }
 
+    def hasSubsetSumZero(numbers: Array[Int]): Boolean = {
+    if (numbers.contains(0)) return true
 
-  def power(t: List[Int]): List[Int] = {
-    @annotation.tailrec
-    def pwr(@specialized t: List[Int], @specialized ps: List[Int]): List[Int] = {
-      if (t.isEmpty) ps
-      else pwr(t.tail, (t.head :: ps  ++ (ps.map(_ + t.head))).distinct )
-    }
-    pwr(t, List.empty[Int])
-  }
-
-
-  def hasSubsetSumZero(numbers: List[Int]): Boolean = {
-    power(numbers).find(_ == 0) match {
+    (2 to numbers.size).par.map(i => generateAllSubArrays(numbers, i)).find(_ == true) match {
       case None => false
       case _ => true
     }
   }
 
+
+  def generateAllSubArrays(@specialized elements: Array[Int] , K: Int): Boolean = {
+    val N = elements.length; //size nums
+
+    var idx = new Array[Int](K);
+    var i = 0
+    while (i < K ) {
+      idx(i) = i
+      i += 1
+    }
+
+    var sums = new Array[Int](K+1);
+    i = 0
+    sums(0) = 0
+    while (i < K ) {
+      sums(i+1) = 0;
+      var ii = i
+      while(ii >= 0 ) {
+        sums(i+1) += elements(ii);
+        ii -= 1
+      }
+      i += 1
+    }
+
+
+    val last = K - 1;
+    var rr = 0;
+
+    while (true) {
+      while(idx(last) < N) {
+        sums(K) = sums(last) + elements(idx(last));
+
+        if (sums(K) == 0) {
+          return true;
+        }
+
+        idx(last) += 1;
+      }
+
+      do {
+        rr += 1;
+        if(rr == K) {
+          return false;
+        }
+        idx(last-rr) += 1;
+
+      } while (idx(last-rr) >= N-rr);
+
+      while(rr > 0) {
+        idx(K-rr) = idx(last-rr) + 1;
+
+        sums(K-rr) = sums(last-rr) + elements(idx(last-rr));
+        rr -= 1;
+      }
+    }
+
+
+    return false;
+  }
 }
