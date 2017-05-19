@@ -58,7 +58,7 @@ Os seguintes deberían devolver `true`:
 
 ## Bonus opcional 2
 
-Calcula o maior conxunto que a tua solución é capaz de procesar en menos de 300 segundos. Engádeo como proba unitaria e publica nun README.md o dato.
+Calcula o maior conxunto que a tua solución é capaz de procesar no peor caso posible en menos de 300 segundos. Engádeo como proba unitaria e publica nun README.md o dato.
 
 Exemplos de probas que podes empregar para cubrir diferentes casos:
 
@@ -106,8 +106,6 @@ Aumenta o número de forma consecutiva ata atopar o límite da túa solución:
 ...
 
 ```
-
-
 
 # Source / Fonte
 
