@@ -24,16 +24,16 @@ Ver [201705/README.md](201705/README.md)
 
 ### PRs para votar:
 
-- [@danybmx](https://github.com/danybmx) en Go (básico, bonus 1, bonus 2 (33?)): https://github.com/vigojug/reto/pull/14
+- [@danybmx](https://github.com/danybmx) en Go (básico, bonus 1, bonus 2): https://github.com/vigojug/reto/pull/14
 - [@daavoo](https://github.com/vigojug/reto/pull/15) en Python (básico): https://github.com/vigojug/reto/pull/15
-- [@migonzalvar](https://github.com/migonzalvar) en Python (básico, bonus 1, bonus 2 (30?)): https://github.com/vigojug/reto/pull/16
-- [@alexhermida](https://github.com/alexhermida) en Python (básico, bonus 1, bonus 2 (30?)): https://github.com/vigojug/reto/pull/17
+- [@migonzalvar](https://github.com/migonzalvar) en Python (básico, bonus 1, bonus 2): https://github.com/vigojug/reto/pull/16
+- [@alexhermida](https://github.com/alexhermida) en Python (básico, bonus 1, bonus 2): https://github.com/vigojug/reto/pull/17
 - [@sergiocarracedo](https://github.com/sergiocarracedo) en PHP (básico, bonus 1): https://github.com/vigojug/reto/pull/18
 - [@felixgomez](https://github.com/vigojug/reto/pull/19) en Haskell (básico, bonus 1): https://github.com/vigojug/reto/pull/19
-- [@antonmry](https://github.com/antonmry) en Java 8 (básico, bonus 1, bonus 2 (34)): https://github.com/vigojug/reto/pull/22
-- [@rubenrua](https://github.com/rubenrua) en Scala (básico, bonus 1, bonus 2 (¿?)): https://github.com/vigojug/reto/pull/23
-- [@alexhermida](https://github.com/alexhermida) en Rust (básico, bonus 1, bonus 2 (¿?)): https://github.com/vigojug/reto/pull/24 
-- [@peque](https://github.com/Peque) en Python (bonus 1): https://github.com/vigojug/reto/pull/25
+- [@antonmry](https://github.com/antonmry) en Java 8 (básico, bonus 1, bonus 2): https://github.com/vigojug/reto/pull/22
+- [@rubenrua](https://github.com/rubenrua) en Scala (básico, bonus 1, bonus 2): https://github.com/vigojug/reto/pull/23
+- [@alexhermida](https://github.com/alexhermida) en Rust (básico, bonus 1, bonus 2): https://github.com/vigojug/reto/pull/24 
+- [@peque](https://github.com/Peque) en Python (bonus 1, bonus 2): https://github.com/vigojug/reto/pull/25
 
 ## Reto Abril 2017: terminado
 
