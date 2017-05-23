@@ -6,9 +6,11 @@ object Reto extends RetoTrait {
 
     var i = 1
 
-    while (i < 50) {
+    val random = scala.util.Random
+    while (i < 100) {
 
-      val r = 1 to i
+      val r = (1 to i).map(_ => random.nextInt())
+
       val start = System.currentTimeMillis();
 
       hasSubsetSumZero(r.toArray)
@@ -36,10 +38,11 @@ trait RetoTrait {
     }
   }
 
-    def hasSubsetSumZero(numbers: Array[Int]): Boolean = {
+  def hasSubsetSumZero(numbers: Array[Int]): Boolean = {
     if (numbers.contains(0)) return true
 
-    (2 to numbers.size).par.map(i => generateAllSubArrays(numbers, i)).find(_ == true) match {
+    val sortedNumbers = numbers.sorted
+    (2 to numbers.size).par.map(i => generateAllSubArrays(sortedNumbers, i)).find(_ == true) match {
       case None => false
       case _ => true
     }
@@ -74,14 +77,16 @@ trait RetoTrait {
     var rr = 0;
 
     while (true) {
-      while(idx(last) < N) {
-        sums(K) = sums(last) + elements(idx(last));
+      if (sums(last) < 0) {
+        while(idx(last) < N) {
+          sums(K) = sums(last) + elements(idx(last));
 
-        if (sums(K) == 0) {
-          return true;
+          if (sums(K) == 0) {
+            return true;
+          }
+
+          idx(last) += 1;
         }
-
-        idx(last) += 1;
       }
 
       do {
@@ -91,7 +96,7 @@ trait RetoTrait {
         }
         idx(last-rr) += 1;
 
-      } while (idx(last-rr) >= N-rr);
+      } while (idx(last-rr) >= N-rr || sums(K-rr) > 0);
 
       while(rr > 0) {
         idx(K-rr) = idx(last-rr) + 1;

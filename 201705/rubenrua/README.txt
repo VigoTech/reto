@@ -53,3 +53,7 @@ Array with 33 records: elapsed time = 66477ms
 Array with 34 records: elapsed time = 122095ms
 Array with 35 records: elapsed time = 269521ms
 Array with 36 records: elapsed time = 491087ms
+
+4nd version (Inspired by @felixgomez #26 solution)
+------------
+??????
