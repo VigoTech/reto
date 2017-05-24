@@ -17,16 +17,39 @@ def reduced_combinations(candidate, numbers):
     return powerset(reduced_numbers, min_size=min_size)
 
 
-def has_subset_sum_zero(numbers):
+def numbers_to_positive_negative(numbers):
     numbers = numpy.array(numbers)
     split = numpy.searchsorted(numbers, 0)
     positive = numbers[split:]
-    # Return True if 0 is in array
-    if positive[0] == 0:
-        return True
     negative = numbers[:split]
     # Rearrange negative numbers
     negative = abs(negative[::-1])
+    return positive, negative
+
+
+def two_sum_zero(numbers):
+    if not numbers:
+        return False
+    positive, negative = numbers_to_positive_negative(numbers)
+    # Return True if 0 is in array
+    if positive[0] == 0:
+        return True
+    for p in range(len(positive)):
+        for n in range(len(negative)):
+            if positive[p] > negative[n]:
+                n += 1
+            elif positive[p] < negative[n]:
+                p += 1
+            else:
+                return True
+    return False
+
+
+def has_subset_sum_zero(numbers):
+    positive, negative = numbers_to_positive_negative(numbers)
+    # Return True if 0 is in array
+    if positive[0] == 0:
+        return True
 
     # Differenciate by size
     if len(positive) > len(negative):

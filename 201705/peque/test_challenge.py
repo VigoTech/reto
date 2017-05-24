@@ -1,22 +1,22 @@
 import pytest
 
 from main import has_subset_sum_zero
-#from main import has_subset_sum_zero
+from main import two_sum_zero
 from main import powerset
 from main import reduced_combinations
 
 
-#@pytest.mark.parametrize('source, result', [
-#    ([1, 2, 3], False),
-#    ([-5, -3, -1, 2, 4, 6], False),
-#    ([], False),
-#    ([-1, 1], True),
-#    ([-97364, -71561, -69336, 19675, 71561, 97863], True),
-#    ([-53974, -39140, -36561, -23935, -15680, 0], True),
-#    ([-2, 2, 3], True),
-#])
-#def test_acceptance_first(source, result):
-#    assert two_sum_zero(source) is result
+@pytest.mark.parametrize('source, result', [
+    ([1, 2, 3], False),
+    ([-5, -3, -1, 2, 4, 6], False),
+    ([], False),
+    ([-1, 1], True),
+    ([-97364, -71561, -69336, 19675, 71561, 97863], True),
+    ([-53974, -39140, -36561, -23935, -15680, 0], True),
+    ([-2, 2, 3], True),
+])
+def test_two_sum_zero(source, result):
+    assert two_sum_zero(source) is result
 
 
 @pytest.mark.parametrize('result,source', [
