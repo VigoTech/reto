@@ -42,7 +42,7 @@ trait RetoTrait {
     if (numbers.contains(0)) return true
 
     val sortedNumbers = numbers.sorted
-    (2 to numbers.size).par.map(i => generateAllSubArrays(sortedNumbers, i)).find(_ == true) match {
+    (2 to numbers.size).par.find(i => generateAllSubArrays(sortedNumbers, i)) match {
       case None => false
       case _ => true
     }
