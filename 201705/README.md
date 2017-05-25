@@ -1,6 +1,6 @@
 # Descrición
 
-Dada unha lista ordenada de enteiros, escribir unha función que devolva si hai dous enteiros na lista que sumen 0. Por exemplo, devolvería `true` si na lista hai os valores -14435 e 14335, xa qué -14435 + 14335 = 0. Tamén devolverá `true` si o 0 aparece na lista.
+Dada unha lista ordenada de distintos enteiros, escribir unha función que devolva si hai dous enteiros na lista que sumen 0. Por exemplo, devolvería `true` si na lista hai os valores -14435 e 14335, xa qué -14435 + 14335 = 0. Tamén devolverá `true` si o 0 aparece na lista.
 
 ## Data Límite creación da PR
 
@@ -20,7 +20,7 @@ Luns 29 de Maio as 21:00
 
 ## Bonus opcional
 
-O reto de este mes é unha versión simplificada do problema de sumar subconxuntos. O bonus consiste en resolver o problema completo. Dada unha lista de distintos enteiros, escribir unha función que devolva si hai algun subconxunto non-vacío de enteiros que sumen 0.
+O reto de este mes é unha versión simplificada do problema de sumar subconxuntos. O bonus consiste en resolver o problema completo. Dada unha lista ordeada de distintos enteiros, escribir unha función que devolva si hai algun subconxunto non-vacío de enteiros que sumen 0.
 
 Exemplos de subconxuntos que suman 0:
 
