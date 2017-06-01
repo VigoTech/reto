@@ -114,34 +114,43 @@ int main( int argc, char** argv ) {
         long firstPositionFree = 1;
         long numberOfPreliminarSums = 1;
         for (int i = 0; i < inputSize && currentState == SOLUTION_NOT_FOUND; i++) {
-                int current = sortedInputList[i];
+                int currentNumber = sortedInputList[i];
+                printf("Element[%6d] = %8d | Subsets = %12lu \n", i, currentNumber, numberOfPreliminarSums);
 
-                //OPTIMIZATION: if the current + negativeSUM is greater than zero
-                // we cannot generate a zero sum, so we can stop
-                if (current + sumNegativeNumbers > 0) {
-                        currentState = SOLUTION_IMPOSSIBLE;
+                if (currentNumber > 0) {
+                        //OPTIMIZATION: if the currentNumber + negativeSUM is greater than zero
+                        // we cannot generate a zero sum, so we can stop
+                        if (currentNumber + sumNegativeNumbers > 0) {
+                                currentState = SOLUTION_IMPOSSIBLE;
+                                continue;
+                        }
+
+                        //OPTIMIZATION: if currentNumber is positive and its sum was done, so we found a solution
+                        if (listOfExistentSums[currentNumber] == 1) {
+                                currentState = SOLUTION_FOUND;
+                                continue;
+                        }
                 }
 
-                printf("Element[%6d] = %8d | Subsets = %12lu \n", i, current, numberOfPreliminarSums);
 
                 for(long currentPosition = 0;
                     currentPosition < numberOfPreliminarSums && currentState == SOLUTION_NOT_FOUND;
                     currentPosition++) {
-                        long sum = preliminarSumsArray[currentPosition] + current;
+                        long sum = preliminarSumsArray[currentPosition] + currentNumber;
                         if (sum == 0) {
                                 currentState = SOLUTION_FOUND;
                         } else {
                                 //OPTIMIZATION: positive sums are useless
                                 if ((sum < 0) &&
                                     //OPTIMIZATION: the list is sorted, if the next sum is greater than zero, sum is useless
-                                    (sum+current <= 0) &&
+                                    (sum + currentNumber <= 0) &&
                                     //OPTIMIZATION: I need to be able to generate a possible positive sum
-                                    (sum+sumPositiveNumbers >= 0) &&
+                                    (sum + sumPositiveNumbers >= 0) &&
                                     //OPTIMIZATION: the sum does not exist in my list
-                                    (listOfExistentSums[sum-sumNegativeNumbers] == 0)) {
+                                    (listOfExistentSums[-sum] == 0)) {
                                         //sum is useful, storing it
                                         preliminarSumsArray[firstPositionFree++] = sum;
-                                        listOfExistentSums[sum-sumNegativeNumbers] = 1;
+                                        listOfExistentSums[-sum] = 1;
                                 }
                         }
                 }
