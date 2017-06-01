@@ -82,7 +82,7 @@ int main( int argc, char** argv ) {
                 return 0;
         }
 
-        // dummy cases
+        // OPTIMIZATION: dummy cases the small element of each side is already bigger than the sum of the other side
         if (sumPositiveNumbers + closetoZeroNegative < 0 ||
             sumNegativeNumbers + closeToZeroPositive > 0) {
                 //impossible solution
@@ -90,9 +90,6 @@ int main( int argc, char** argv ) {
         }
 
         // now we can have some fun :)
-
-        //store only negative sums
-        char* listOfExistentSums = (char*) calloc((-1*sumNegativeNumbers),sizeof(char));
 
         //sort the monster to apply some tricks
         quickSort(sortedInputList, 0, inputSize-1);
@@ -102,6 +99,8 @@ int main( int argc, char** argv ) {
 
         //store partial sums
         int* preliminarSumsArray = (int *) malloc(sizeof(long[150000000]));
+        //store only negative sums
+        char* listOfExistentSums = (char*) calloc((-1*sumNegativeNumbers),sizeof(char));
 
         //add zero to create the case of the element alone
         preliminarSumsArray[0] = 0;
@@ -116,10 +115,10 @@ int main( int argc, char** argv ) {
                                 printf("There is a subset with sum 0!!! \n");
                                 return 0;
                         }
+
+                        //printf("> %d %d %d %d %d\n", sum, (sum < 0),(sum+current <= 0) , (sum+sumPositiveNumbers >= 0),(listOfExistentSums[sum-sumNegativeNumbers] == 0));
                         //OPTIMIZATION: positive sums are useless
                         if ((sum < 0) &&
-                            //OPTIMIZATION: if I do not have a positive number which fits, sum is useless
-                            (sum+closeToZeroPositive <= 0) &&
                             //OPTIMIZATION: the list is sorted, if the next sum is greater than zero, sum is useless
                             (sum+current <= 0) &&
                             //OPTIMIZATION: I need to be able to generate a possible positive sum
@@ -136,5 +135,6 @@ int main( int argc, char** argv ) {
 
         free(preliminarSumsArray);
         free(sortedInputList);
+        free(listOfExistentSums);
         return 0;
 }
