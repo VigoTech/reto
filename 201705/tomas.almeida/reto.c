@@ -76,7 +76,13 @@ int main( int argc, char** argv ) {
         long sumPositiveNumbers = 0;
         long sumNegativeNumbers = 0;
 
-        int foundZero = atoiAndFindElements(inputSize, &(argv[1]), &closeToZeroPositive, &closetoZeroNegative, &sumPositiveNumbers, &sumNegativeNumbers, &sortedInputList);
+        int foundZero = atoiAndFindElements(inputSize,
+                                            &(argv[1]),
+                                            &closeToZeroPositive,
+                                            &closetoZeroNegative,
+                                            &sumPositiveNumbers,
+                                            &sumNegativeNumbers,
+                                            &sortedInputList);
 
         printf("%10ld %8d %8d %10ld\n", sumNegativeNumbers, closetoZeroNegative, closeToZeroPositive, sumPositiveNumbers);
 
@@ -86,8 +92,9 @@ int main( int argc, char** argv ) {
         }
 
         // OPTIMIZATION: dummy cases the small element of each side is already bigger than the sum of the other side
-        if (sumPositiveNumbers + closetoZeroNegative < 0 ||
-            sumNegativeNumbers + closeToZeroPositive > 0) {
+        if (currentState == SOLUTION_NOT_FOUND &&
+            (sumPositiveNumbers + closetoZeroNegative < 0 ||
+            sumNegativeNumbers + closeToZeroPositive > 0)) {
                 //impossible solution
                 currentState = SOLUTION_IMPOSSIBLE;
         }
@@ -98,7 +105,7 @@ int main( int argc, char** argv ) {
         quickSort(sortedInputList, 0, inputSize-1);
 
         //store partial sums
-        long* preliminarSumsArray = (long*) malloc((-1*sumNegativeNumbers)*sizeof(long));
+        long* preliminarSumsArray = (long*) calloc((-1*sumNegativeNumbers),sizeof(long));
         //store only negative sums
         char* listOfExistentSums = (char*) calloc((-1*sumNegativeNumbers),sizeof(char));
 
@@ -109,9 +116,17 @@ int main( int argc, char** argv ) {
         for (int i = 0; i < inputSize && currentState == SOLUTION_NOT_FOUND; i++) {
                 int current = sortedInputList[i];
 
+                //OPTIMIZATION: if the current + negativeSUM is greater than zero
+                // we cannot generate a zero sum, so we can stop
+                if (current + sumNegativeNumbers > 0) {
+                    currentState = SOLUTION_IMPOSSIBLE;
+                }
+
                 printf("Element[%6d] = %8d | Subsets = %12lu \n", i, current, numberOfPreliminarSums);
 
-                for(long currentPosition = 0; currentPosition < numberOfPreliminarSums && currentState == SOLUTION_NOT_FOUND; currentPosition++) {
+                for(long currentPosition = 0;
+                    currentPosition < numberOfPreliminarSums && currentState == SOLUTION_NOT_FOUND;
+                    currentPosition++) {
                         long sum = preliminarSumsArray[currentPosition] + current;
                         if (sum == 0) {
                                 currentState = SOLUTION_FOUND;
@@ -134,18 +149,18 @@ int main( int argc, char** argv ) {
         }
 
         //a good man always frees the used memory
-        free(preliminarSumsArray);
         free(sortedInputList);
         free(listOfExistentSums);
+        free(preliminarSumsArray);
 
         switch (currentState) {
                 case SOLUTION_NOT_FOUND:
                 case SOLUTION_IMPOSSIBLE:
                         printf("\n> > > There is NO possible solutions :-(\n");
-                        break;
+                        return 1;
                 case SOLUTION_FOUND:
+                default:
                         printf("\n> > > There is a subset with sum Zero :-)\n");
-                        break;
+                        return 0;
         }
-        return 0;
 }

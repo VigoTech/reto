@@ -59,8 +59,9 @@ user    0m45.012s
 sys     0m0.184s
 
 ```
-
 You can play with the generator to give you more bad results :-)
+
+Also, there is a `tester.sh` to perform quick tests. 
 
 # License:
  GPL 3.0
