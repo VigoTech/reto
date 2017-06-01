@@ -94,7 +94,7 @@ int main( int argc, char** argv ) {
         // OPTIMIZATION: dummy cases the small element of each side is already bigger than the sum of the other side
         if (currentState == SOLUTION_NOT_FOUND &&
             (sumPositiveNumbers + closetoZeroNegative < 0 ||
-            sumNegativeNumbers + closeToZeroPositive > 0)) {
+             sumNegativeNumbers + closeToZeroPositive > 0)) {
                 //impossible solution
                 currentState = SOLUTION_IMPOSSIBLE;
         }
@@ -104,12 +104,12 @@ int main( int argc, char** argv ) {
         //sort the monster to apply some tricks
         quickSort(sortedInputList, 0, inputSize-1);
 
-        //store partial sums
-        long* preliminarSumsArray = (long*) calloc((-1*sumNegativeNumbers),sizeof(long));
-        //store only negative sums
-        char* listOfExistentSums = (char*) calloc((-1*sumNegativeNumbers),sizeof(char));
+        //store partial sums (max is the sumNegativeNumbers until zero)
+        long* preliminarSumsArray = (long*) malloc((-1*sumNegativeNumbers+1)*sizeof(long));
+        //store only negative sums (max is the sumNegativeNumbers until zero)
+        char* listOfExistentSums = (char*) malloc((-1*sumNegativeNumbers+1)*sizeof(char));
 
-        //add zero to create the case of the element alone
+        //OPTIMIZATION: add zero to create the case of the element alone
         preliminarSumsArray[0] = 0;
         long firstPositionFree = 1;
         long numberOfPreliminarSums = 1;
@@ -119,7 +119,7 @@ int main( int argc, char** argv ) {
                 //OPTIMIZATION: if the current + negativeSUM is greater than zero
                 // we cannot generate a zero sum, so we can stop
                 if (current + sumNegativeNumbers > 0) {
-                    currentState = SOLUTION_IMPOSSIBLE;
+                        currentState = SOLUTION_IMPOSSIBLE;
                 }
 
                 printf("Element[%6d] = %8d | Subsets = %12lu \n", i, current, numberOfPreliminarSums);
@@ -149,9 +149,9 @@ int main( int argc, char** argv ) {
         }
 
         //a good man always frees the used memory
-        free(sortedInputList);
         free(listOfExistentSums);
         free(preliminarSumsArray);
+        free(sortedInputList);
 
         switch (currentState) {
                 case SOLUTION_NOT_FOUND:
