@@ -35,6 +35,7 @@ Ver [201705/README.md](201705/README.md)
 - [@alexhermida](https://github.com/alexhermida) en Rust: https://github.com/vigojug/reto/pull/24 
 - [@peque](https://github.com/Peque) en Python: https://github.com/vigojug/reto/pull/25
 - [@felixgomez](https://github.com/felixgomez) en PHP: https://github.com/vigojug/reto/pull/26
+- [@tomasalmeida](https://github.com/tomasalmeida) en C: https://github.com/vigojug/reto/pull/27
 
 ## Reto Abril 2017: terminado
 
