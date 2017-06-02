@@ -104,10 +104,11 @@ int main( int argc, char** argv ) {
         //sort the monster to apply some tricks
         quickSort(sortedInputList, 0, inputSize-1);
 
+        int listSize = (-1*sumNegativeNumbers) + 1;
         //store partial sums (max is the sumNegativeNumbers until zero)
-        long* preliminarSumsArray = (long*) malloc((-1*sumNegativeNumbers+1)*sizeof(long));
+        long* preliminarSumsArray = (long*) malloc(listSize*sizeof(long));
         //store only negative sums (max is the sumNegativeNumbers until zero)
-        char* listOfExistentSums = (char*) malloc((-1*sumNegativeNumbers+1)*sizeof(char));
+        char* listOfExistentSums = (char*) calloc(listSize,sizeof(char));
 
         //OPTIMIZATION: add zero to create the case of the element alone
         preliminarSumsArray[0] = 0;
@@ -140,6 +141,7 @@ int main( int argc, char** argv ) {
                         if (sum == 0) {
                                 currentState = SOLUTION_FOUND;
                         } else {
+                                //printf("%ld %d %d %d %d \n", sum, (sum < 0), (sum + currentNumber <= 0), (sum + sumPositiveNumbers >= 0), (listOfExistentSums[-sum]));
                                 //OPTIMIZATION: positive sums are useless
                                 if ((sum < 0) &&
                                     //OPTIMIZATION: the list is sorted, if the next sum is greater than zero, sum is useless
@@ -155,6 +157,10 @@ int main( int argc, char** argv ) {
                         }
                 }
                 numberOfPreliminarSums = firstPositionFree;
+                // for (int j = 0 ; j < firstPositionFree; j++){
+                //         printf(" %ld ", preliminarSumsArray[j]);
+                // }
+                // printf("\n");
         }
 
         //a good man always frees the used memory

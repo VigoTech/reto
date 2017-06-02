@@ -64,14 +64,14 @@ TESTS_SIZE=25
 
 for ((i=0;i<=$TESTS_SIZE;i++)); do
   printf "Test %02d -> " $i;
-  begin=`date +%s%3N`
+  begin=`perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)'`
   ./reto ${TEST_ELEMENTS[$i]} | grep -q "There is a"
   result=$?
-  end=`date +%s%3N`
-  elapsed=`bc -l <<< "scale=3;($end - $begin)/1000"`
+  end=`perl -MTime::HiRes -e 'printf("%.0f\n",Time::HiRes::time()*1000)'`
+  elapsed=`awk "BEGIN {print (${end} - ${begin})/1000}"`
   if [ $result -eq ${TEST_SOLUTION[$i]} ]; then
-    echo -e '\e[32;1m OK \e[m [Elapsed' ${elapsed}'s]'
+    printf "OK [%0.3fs]\n" ${elapsed}
   else
-    echo -e '\e[31;1m KO \e[m => ' ${TEST_ELEMENTS[$i]}
+    echo "KO  => "${TEST_ELEMENTS[$i]}
   fi
 done
