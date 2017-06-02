@@ -108,7 +108,31 @@ int main( int argc, char** argv ) {
         //store partial sums (max is the sumNegativeNumbers until zero)
         long* preliminarSumsArray = (long*) malloc(listSize*sizeof(long));
         //store only negative sums (max is the sumNegativeNumbers until zero)
-        char* listOfExistentSums = (char*) calloc(listSize,sizeof(char));
+        char* listOfExistentNegativeSums = (char*) calloc(listSize,sizeof(char));
+
+        //store only positive sums
+        int positiveListSize = sumPositiveNumbers > -sumNegativeNumbers ? sumPositiveNumbers : -sumNegativeNumbers;
+        printf("List size is %d \n", positiveListSize);
+        char* listOfExistentPositiveSums = (char*) calloc(positiveListSize+1,sizeof(char));
+
+        //find first positive element using binary search
+        int first = 0;
+        int last = inputSize - 1;
+        int firstPositivePosition = (first+last)/2;
+        while (first <= last) {
+                if (sortedInputList[firstPositivePosition] < closeToZeroPositive) {
+                        first = firstPositivePosition + 1;
+                } else if (sortedInputList[firstPositivePosition] == closeToZeroPositive) {
+                        break;
+                } else {
+                        last = firstPositivePosition - 1;
+                }
+                firstPositivePosition = (first + last)/2;
+        }
+        for(int j=firstPositivePosition; j < inputSize; j++) {
+                printf("Set to 1 = %d \n", sortedInputList[j]);
+                listOfExistentPositiveSums[sortedInputList[j]] = 1;
+        }
 
         //OPTIMIZATION: add zero to create the case of the element alone
         preliminarSumsArray[0] = 0;
@@ -127,7 +151,7 @@ int main( int argc, char** argv ) {
                         }
 
                         //OPTIMIZATION: if currentNumber is positive and its sum was done, so we found a solution
-                        if (listOfExistentSums[currentNumber] == 1) {
+                        if (listOfExistentNegativeSums[currentNumber] == 1) {
                                 currentState = SOLUTION_FOUND;
                                 continue;
                         }
@@ -138,10 +162,12 @@ int main( int argc, char** argv ) {
                     currentPosition < numberOfPreliminarSums && currentState == SOLUTION_NOT_FOUND;
                     currentPosition++) {
                         long sum = preliminarSumsArray[currentPosition] + currentNumber;
-                        if (sum == 0) {
+                        if (sum == 0 ) {
+                                currentState = SOLUTION_FOUND;
+                        } else if (currentNumber < 0 && listOfExistentPositiveSums[-sum] == 1) {
                                 currentState = SOLUTION_FOUND;
                         } else {
-                                //printf("%ld %d %d %d %d \n", sum, (sum < 0), (sum + currentNumber <= 0), (sum + sumPositiveNumbers >= 0), (listOfExistentSums[-sum]));
+                                //printf("%ld %d %d %d %d \n", sum, (sum < 0), (sum + currentNumber <= 0), (sum + sumPositiveNumbers >= 0), (listOfExistentNegativeSums[-sum]));
                                 //OPTIMIZATION: positive sums are useless
                                 if ((sum < 0) &&
                                     //OPTIMIZATION: the list is sorted, if the next sum is greater than zero, sum is useless
@@ -149,10 +175,10 @@ int main( int argc, char** argv ) {
                                     //OPTIMIZATION: I need to be able to generate a possible positive sum
                                     (sum + sumPositiveNumbers >= 0) &&
                                     //OPTIMIZATION: the sum does not exist in my list
-                                    (listOfExistentSums[-sum] == 0)) {
+                                    (listOfExistentNegativeSums[-sum] == 0)) {
                                         //sum is useful, storing it
                                         preliminarSumsArray[firstPositionFree++] = sum;
-                                        listOfExistentSums[-sum] = 1;
+                                        listOfExistentNegativeSums[-sum] = 1;
                                 }
                         }
                 }
@@ -164,7 +190,8 @@ int main( int argc, char** argv ) {
         }
 
         //a good man always frees the used memory
-        free(listOfExistentSums);
+        free(listOfExistentNegativeSums);
+        free(listOfExistentPositiveSums);
         free(preliminarSumsArray);
         free(sortedInputList);
 
