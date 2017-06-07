@@ -1,0 +1,8 @@
+[package]
+name = "rust"
+version = "0.1.0"
+authors = ["Alex Hermida <alexhermida@gmail.com>"]
+
+[dependencies]
+itertools = "0.6.0"
+time = "0.1.37"
