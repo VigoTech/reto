@@ -20,7 +20,7 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech A
 
 ## Reto Junio 2017: data límite Luns 26 de junio as 21:00
 
-Ver [201705/README.md](201705/README.md).
+Ver [201706/README.md](201706/README.md).
 
 ## Reto Maio 2017: terminado
 
