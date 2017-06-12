@@ -109,4 +109,4 @@ Aumenta o número de forma consecutiva ata atopar o límite da túa solución:
 
 # Source / Fonte
 
-Desvelarase o final do reto.
+https://www.reddit.com/r/dailyprogrammer/comments/68oda5/20170501_challenge_313_easy_subset_sum/
