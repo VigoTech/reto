@@ -82,7 +82,7 @@ Encontrar el menor numero de monedas necesarias para resolver el problema anteri
 1 2 5 10 20 50
 0 5 5  5  5  2
 187
-50 50 20 20 20 5 2
+50 50 20 20 20 20 5 2
 ```
 
 ```
@@ -92,6 +92,15 @@ Encontrar el menor numero de monedas necesarias para resolver el problema anteri
 2 2 0  1  10
 187
 50 50 50 25 5 5 1 1
+```
+
+```
+#Moneda klingtoniana
+3
+1  3  4
+10 10 10
+6
+3 3
 ```
 
 # Source / Fonte
