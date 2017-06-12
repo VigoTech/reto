@@ -17,7 +17,7 @@ class MainTest {
         // Bonus 2
         assertEquals("50 50 20 20 20 20 5 2", Main.processFile("bonus2-1.txt"));
         assertEquals("50 50 50 25 5 5 1 1", Main.processFile("bonus2-2.txt"));
-        assertEquals("3 3", Main.processFile("bonus2-3.txt"));
+        assertEquals("3 3", Main.processFile("bonus2-3.txt")); // Not passing
     }
 
 }
