@@ -1,0 +1,18 @@
+{
+  "name": "felixgomez/subsetsum",
+  "description": "Dynamic programmic approach to subset sum problem",
+  "authors": [
+    {
+      "name": "Félix Gómez",
+      "email": "felix.gomez.lopez@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "SubsetSum\\": "src/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^6.1"
+  }
+}

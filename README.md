@@ -2,7 +2,7 @@
 
 O reto é un exercicio de programación curto (uns 30 minutos) que se propón despois de cada meetup do VigoJUG. O gañador presenta na seguinte meetup a solución o reto e, se lle apetece, propón o reto do seguinte mes.
 
-Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech Alliance](http://vigotech.org) e terás axuda da organización. 
+Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech Alliance](http://vigotech.org) e terás axuda da organización.
 
 ## Normas
 
@@ -18,13 +18,35 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech A
 
 - Todas as PRs se poñerán en master unha vez rematado o reto.
 
-## Reto Maio 2017: data límite luns 29 de Maio as 21:00
+## Reto Junio 2017: data límite Luns 26 de junio as 21:00
+
+Ver [201706/README.md](201706/README.md).
+
+### PRs:
+
+- [@kix2902](https://github.com/kix2902) en Java: https://github.com/vigojug/reto/pull/29
+- [@kix2902](https://github.com/kix2902) en Kotlin: https://github.com/vigojug/reto/pull/30
+
+## Reto Maio 2017: terminado
 
 Ver [201705/README.md](201705/README.md)
 
-### PRs para votar:
+Gañador: [@danybmx](https://github.com/danybmx) en Go: https://github.com/vigojug/reto/pull/14
 
-- ¡Podes ser o primeiro!
+### PRs:
+
+- [@danybmx](https://github.com/danybmx) en Go: https://github.com/vigojug/reto/pull/14
+- [@daavoo](https://github.com/daavoo) en Python: https://github.com/vigojug/reto/pull/15
+- [@migonzalvar](https://github.com/migonzalvar) en Python: https://github.com/vigojug/reto/pull/16
+- [@alexhermida](https://github.com/alexhermida) en Python: https://github.com/vigojug/reto/pull/17
+- [@sergiocarracedo](https://github.com/sergiocarracedo) en PHP: https://github.com/vigojug/reto/pull/18
+- [@felixgomez](https://github.com/felixgomez) en Haskell: https://github.com/vigojug/reto/pull/19
+- [@antonmry](https://github.com/antonmry) en Java 8: https://github.com/vigojug/reto/pull/22
+- [@rubenrua](https://github.com/rubenrua) en Scala: https://github.com/vigojug/reto/pull/23
+- [@alexhermida](https://github.com/alexhermida) en Rust: https://github.com/vigojug/reto/pull/24
+- [@peque](https://github.com/Peque) en Python: https://github.com/vigojug/reto/pull/25
+- [@felixgomez](https://github.com/felixgomez) en PHP: https://github.com/vigojug/reto/pull/26
+- [@tomasalmeida](https://github.com/tomasalmeida) en C: https://github.com/vigojug/reto/pull/27
 
 ## Reto Abril 2017: terminado
 

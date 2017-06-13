@@ -1,0 +1,22 @@
+{
+  "name": "reto-2-vigojug",
+  "version": "1.0.0",
+  "description": "Dada unha lista ordenada de enteiros, escribir unha función que devolva si hai dous enteiros na lista que sumen 0. Por exemplo, devolvería true si na lista hai os valores -14435 e 14335, xa qué -14435 + 14335 = 0. Tamén devolverá true si o 0 aparece na lista.",
+  "main": "sumacero.js",
+  "scripts": {
+    "test": "jest --verbose"
+  },
+  "keywords": [
+    "javascript",
+    "js",
+    "jest",
+    "reto",
+    "vigojug"
+  ],
+  "author": "danybmx",
+  "license": "ISC",
+  "devDependencies": {
+    "jest": "^19.0.2",
+    "performance-now": "^2.1.0"
+  }
+}

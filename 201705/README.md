@@ -1,6 +1,6 @@
 # Descrición
 
-Dada unha lista ordenada de enteiros, escribir unha función que devolva si hai dous enteiros na lista que sumen 0. Por exemplo, devolvería `true` si na lista hai os valores -14435 e 14335, xa qué -14435 + 14335 = 0. Tamén devolverá `true` si o 0 aparece na lista.
+Dada unha lista ordenada de distintos enteiros, escribir unha función que devolva si hai dous enteiros na lista que sumen 0. Por exemplo, devolvería `true` si na lista hai os valores -14435 e 14335, xa qué -14435 + 14335 = 0. Tamén devolverá `true` si o 0 aparece na lista.
 
 ## Data Límite creación da PR
 
@@ -20,7 +20,7 @@ Luns 29 de Maio as 21:00
 
 ## Bonus opcional
 
-O reto de este mes é unha versión simplificada do problema de sumar subconxuntos. O bonus consiste en resolver o problema completo. Dada unha lista de distintos enteiros, escribir unha función que devolva si hai algun subconxunto non-vacío de enteiros que sumen 0.
+O reto de este mes é unha versión simplificada do problema de sumar subconxuntos. O bonus consiste en resolver o problema completo. Dada unha lista ordeada de distintos enteiros, escribir unha función que devolva si hai algun subconxunto non-vacío de enteiros que sumen 0.
 
 Exemplos de subconxuntos que suman 0:
 
@@ -31,6 +31,8 @@ Exemplos de subconxuntos que suman 0:
 ```
 
 É dicir, se calquera deses conxuntos aparece na entrada, debería devolver `true`.
+
+Nota: o exemplo `[-5, -3, -1, 2, 4, 6] -> false` do reto pasa a `true` co bonus.
 
 ## Exemplos do bonus
 
@@ -56,16 +58,55 @@ Os seguintes deberían devolver `true`:
 
 ## Bonus opcional 2
 
-Calcula o maior conxunto que a tua solución é capaz de procesar en menos de 300 segundos. Añadeo como proba unitaria e publica nun README.md o dato.
+Calcula o maior conxunto que a tua solución é capaz de procesar no peor caso posible en menos de 300 segundos. Engádeo como proba unitaria e publica nun README.md o dato.
 
-Por exemplo, está sería unha boa proba:
+Exemplos de probas que podes empregar para cubrir diferentes casos:
 
 ```
-[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20] -> false
+# No solution case
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10] -> false
+
+# Negative worst case
+[-9, -8, -7, -6, -5, -4, -3, -2, -1, 45] -> true
+
+# Positive worst case
+[-45, 1, 2, 3, 4, 5, 6, 7, 8, 9] -> true
 ```
 
-Aumenta o número de forma consecutiva ata encontrar o límite da tua solución.
+Exemplo de código para xerar os casos anteriores en Python:
+
+```python
+def nosolution_case(N):
+    return range(1, N + 1)
+
+def negative_worst_case(N):
+    case = list(range(-N + 1, 0))
+    case += [abs(sum(case))]
+    return case
+
+def positive_worst_case(N):
+    case = list(range(1, N))
+    case.insert(0, - sum(case))
+    return case
+```
+
+Aumenta o número de forma consecutiva ata atopar o límite da túa solución:
+
+```
+# *_case(11)
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] -> false
+[-10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 55] -> true
+[-55, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10] -> true
+
+# *_case(12)
+[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] -> false
+[-11, -10, -9, -8, -7, -6, -5, -4, -3, -2, -1, 66] -> true
+[-66, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11] -> true
+
+...
+
+```
 
 # Source / Fonte
 
-Desvelarase o final do reto.
+https://www.reddit.com/r/dailyprogrammer/comments/68oda5/20170501_challenge_313_easy_subset_sum/
