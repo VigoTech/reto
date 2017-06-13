@@ -1,0 +1,16 @@
+{
+    "name": "sergio/201706",
+    "type": "project",
+    "authors": [
+        {
+            "name": "Sergio Carracedo",
+            "email": "info@sergiocarracedo.es"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"VigoJugCoins\\": "src/"}
+    },
+    "require": {
+        "symfony/console": "^3.3"
+    }
+}
