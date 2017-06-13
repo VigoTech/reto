@@ -22,6 +22,11 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech A
 
 Ver [201706/README.md](201706/README.md).
 
+### PRs:
+
+- [@kix2902](https://github.com/kix2902) en Java: https://github.com/vigojug/reto/pull/29
+- [@kix2902](https://github.com/kix2902) en Kotlin: https://github.com/vigojug/reto/pull/30
+
 ## Reto Maio 2017: terminado
 
 Ver [201705/README.md](201705/README.md)
