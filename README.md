@@ -26,6 +26,7 @@ Ver [201706/README.md](201706/README.md).
 
 - [@kix2902](https://github.com/kix2902) en Java: https://github.com/vigojug/reto/pull/29
 - [@kix2902](https://github.com/kix2902) en Kotlin: https://github.com/vigojug/reto/pull/30
+- [@sergiocarracedo](https://github.com/sergiocarracedo) en PHP: https://github.com/vigojug/reto/pull/31
 
 ## Reto Maio 2017: terminado
 
