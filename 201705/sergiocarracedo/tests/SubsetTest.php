@@ -64,7 +64,7 @@ final class SubsetTest extends TestCase {
     }
   }
 
-  public function testExamplesMustBeFalseHuge() {
+  /*public function testExamplesMustBeFalseLarge() {
     $examples = [
       [-83314, -82838, -80120, -63468, -62478, -59378, -56958, -50061, -34791, -32264, -21928, -14988, 23767, 24417, 26403, 26511, 36399, 78055],
       [-92953, -91613, -89733, -50673, -16067, -9172, 8852, 30883, 46690, 46968, 56772, 58703, 59150, 78476, 84413, 90106, 94777, 95148],
@@ -79,7 +79,7 @@ final class SubsetTest extends TestCase {
 
   }
 
-  public function testExamplesMustBeTrueHuge() {
+  public function testExamplesMustBeTrueLarge() {
     $examples = [
       [-97162, -95761, -94672, -87254, -57207, -22163, -20207, -1753, 11646, 13652, 14572, 30580, 52502, 64282, 74896, 83730, 89889, 92200],
       [-93976, -93807, -64604, -59939, -44394, -36454, -34635, -16483, 267, 3245, 8031, 10622, 44815, 46829, 61689, 65756, 69220, 70121],
@@ -91,6 +91,25 @@ final class SubsetTest extends TestCase {
     foreach($examples as $example) {
       $subset = new Subset($example);
       $this->assertTrue($subset->checkNulls());
+    }
+  }*/
+
+  public function testExamplesMustBeHuge() {
+
+    $i = 0;
+    $execTime = 0;
+    $set = [];
+
+    while ($execTime <= 300) {
+      $set[] = $i;
+      $time = time();
+      $subset = new Subset($set);
+      $this->assertFalse($subset->checkNulls());
+      $execTime = time() - $time;
+      unset($subset);
+      print 'Length: ' . $i . '  - ExecTime: ' . $execTime;
+      $i++;
+
     }
   }
 }

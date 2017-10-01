@@ -41,7 +41,7 @@ class Subset {
       }
       $sum = array_sum($subset);
 
-      if (empty($sum)) {
+      if (empty($sum) && count($subset) > 1) {
         return TRUE;
       }
     }
