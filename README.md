@@ -1,8 +1,8 @@
 # O reto
 
-O reto é un exercicio de programación curto (uns 30 minutos) que se propón despois de cada meetup do VigoJUG. O gañador presenta na seguinte meetup a solución o reto e, se lle apetece, propón o reto do seguinte mes.
+O reto é un exercicio de programación curto (uns 30 minutos, sen contar posibles bonus optativos) que se propón o principio do mes e se fecha a finais. 
 
-Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech Alliance](http://vigotech.org) e terás axuda da organización.
+Se queres participar pero tes dubidas, contacta no canal #reto da [VigoTech Alliance](http://vigotech.org) e terás axuda da organización.
 
 ## Normas
 
@@ -12,13 +12,15 @@ Se queres participar pero tes dubidas, contacta no canal #VigoJUG da [VigoTech A
 
 - Este README se actualizará cas novas PRs para que sexa doado revisalas.
 
-- Antes dunha semana da data do meetup, se poñerán as PRs nunha enquisa no [Meetup do VigoJUG](https://www.meetup.com/Vigo-JUG/polls/).
+- Todas as PRs se poñerán en master unha vez rematado o reto, o derradeiro día do mes.
 
-- A solución máis votada será a gañadora e a que presentará o reto na Meetup. Se non pode acudir, o fará a seguinte máis votada.
+- Calquera pode propoñer un novo reto facendo unha PR neste repositorio. O reto revisarase pola organización para asegurar que cumpre os obxetivos da actividade.
 
-- Todas as PRs se poñerán en master unha vez rematado o reto.
+## Reto Outubro 2017: data límite Martes 31 de Outubro as 21:00
 
-## Reto Junio 2017: data límite Luns 26 de junio as 21:00
+Ver [201705/README.md](201705/README.md)
+
+## Reto Junio 2017: terminado
 
 Ver [201706/README.md](201706/README.md).
 
@@ -31,8 +33,6 @@ Ver [201706/README.md](201706/README.md).
 ## Reto Maio 2017: terminado
 
 Ver [201705/README.md](201705/README.md)
-
-Gañador: [@danybmx](https://github.com/danybmx) en Go: https://github.com/vigojug/reto/pull/14
 
 ### PRs:
 
@@ -52,8 +52,6 @@ Gañador: [@danybmx](https://github.com/danybmx) en Go: https://github.com/vigoj
 ## Reto Abril 2017: terminado
 
 Ver [201704/README.md](201704/README.md).
-
-Gañador: [@migonzalvar](https://github.com/migonzalvar) en Python: https://github.com/vigojug/reto/pull/5
 
 ### PRs:
 
