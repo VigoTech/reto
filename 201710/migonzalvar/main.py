@@ -198,9 +198,10 @@ class Runner:
 def main() -> None:
     args = [int(i) for i in sys.argv[1:]]
     goal, capacities = args[0], args[1:]
+    zeroes = [0 for _ in capacities]
     actions = build_actions(*capacities)
     runner = Runner(actions, goal)
-    chain = runner.search(State(0, 0), [])
+    chain = runner.search(State(*zeroes), [])
     if not chain:
         print('No solution found.')
         raise SystemExit(1)
