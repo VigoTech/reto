@@ -55,10 +55,6 @@ class State:
         return f'State({value})'
 
 
-def check(state: State) -> bool:
-    return bool(state.jar_0 == 6 or state.jar_1 == 6)
-
-
 # Actions
 
 class Action:
@@ -140,13 +136,17 @@ def test() -> None:
     for action in actions:
         print(action.__doc__)
         state = action(state)
-    assert check(state)
+    assert 6 in state.jars
     print(f'Conseguido! {state}')
 
 
 class Runner:
-    def __init__(self, actions: Iterable) -> None:
+    def __init__(self, actions: Iterable, goal: int) -> None:
         self.actions = actions
+        self.goal = goal
+
+    def check(self, state: State) -> bool:
+        return self.goal in state.jars
 
     def search(
             self,
@@ -166,7 +166,7 @@ class Runner:
                 # No way out
                 debug('No way out')
                 continue
-            if check(new_state):
+            if self.check(new_state):
                 # Solution found!
                 debug('Found it!')
                 return [action]
@@ -194,9 +194,10 @@ class Runner:
 
 
 def main() -> None:
-    capacities = map(int, sys.argv[1:])
+    args = [int(i) for i in sys.argv[1:]]
+    goal, capacities = args[0], args[1:]
     actions = build_actions(*capacities)
-    runner = Runner(actions)
+    runner = Runner(actions, goal)
     chain = runner.search(State(0, 0), [])
     if not chain:
         print('No solution found.')
