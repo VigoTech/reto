@@ -61,7 +61,12 @@ def check(state: State) -> bool:
 
 # Actions
 
-class Empty:
+class Action:
+    def __call__(self, state: State) -> State:
+        raise NotImplementedError
+
+
+class Empty(Action):
     def __init__(self, idx: int) -> None:
         self.idx = idx
         self.__doc__ = f'Vaciar xarra {self.idx}'
@@ -72,7 +77,7 @@ class Empty:
         return State(*jars)
 
 
-class Fill:
+class Fill(Action):
     def __init__(self, idx: int, capacity: int) -> None:
         self.idx = idx
         self.capacity = capacity
@@ -84,7 +89,7 @@ class Fill:
         return State(*jars)
 
 
-class Pour:
+class Pour(Action):
     def __init__(self, donor: int, recipient: int, capacity: int) -> None:
         self.donor = donor
         self.recipient = recipient
@@ -104,15 +109,15 @@ class Pour:
         return State(*jars)
 
 
-def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
-    actions = (
-        Fill(0, capacity_0),
-        Fill(1, capacity_1),
-        Empty(0),
-        Empty(1),
-        Pour(0, 1, CAPACITY_1),
-        Pour(1, 0, CAPACITY_0),
-    )
+def build_actions(*capacities: int) -> Iterable:
+    actions = []  # type: List[Action]
+    for n, capacity in enumerate(capacities):
+        actions.append(Fill(n, capacity))
+        actions.append(Empty(n))
+        for donor in range(len(capacities)):
+            if donor == n:
+                continue
+            actions.append(Pour(donor, n, capacity))
     return actions
 
 
