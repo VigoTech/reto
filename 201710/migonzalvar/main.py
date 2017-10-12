@@ -1,3 +1,4 @@
+from functools import partial as builtin_partial
 import os
 import sys
 from typing import Any, List, Optional
@@ -61,14 +62,14 @@ def check(state: State) -> bool:
 
 # Actions
 
-def fill_0(state: State) -> State:
+def generic_fill_0(capacity, state: State) -> State:
     "Encher xarra 0"
-    return State(CAPACITY_0, state.jar_1)
+    return State(capacity, state.jar_1)
 
 
-def fill_1(state: State) -> State:
+def generic_fill_1(capacity, state: State) -> State:
     "Encher xarra 1"
-    return State(state.jar_0, CAPACITY_1)
+    return State(state.jar_0, capacity)
 
 
 def empty_0(state: State) -> State:
@@ -81,21 +82,42 @@ def empty_1(state: State) -> State:
     return State(state.jar_0, 0)
 
 
-def pour_0_to_1(state: State) -> State:
+def generic_pour_0_to_1(capacity, state: State) -> State:
     "Verter xarra 0 en 1"
-    space = CAPACITY_1 - state.jar_1
+    space = capacity - state.jar_1
     exchange = state.jar_0 if state.jar_0 <= space else space
     return State(state.jar_0 - exchange, state.jar_1 + exchange)
 
 
-def pour_1_to_0(state: State) -> State:
+def generic_pour_1_to_0(capacity, state: State) -> State:
     "Verter xarra 1 en 0"
-    space = CAPACITY_0 - state.jar_0
+    space = capacity - state.jar_0
     exchange = state.jar_1 if state.jar_1 <= space else space
     return State(state.jar_0 + exchange, state.jar_1 - exchange)
 
 
-ACTIONS = fill_0, fill_1, empty_0, empty_1, pour_0_to_1, pour_1_to_0
+def partial(func, *args, **kwargs):
+    wrap = builtin_partial(func, *args, **kwargs)
+    wrap.__doc__ = func.__doc__
+    return wrap
+
+
+fill_0 = partial(generic_fill_0, CAPACITY_0)
+fill_1 = partial(generic_fill_1, CAPACITY_1)
+pour_0_to_1 = partial(generic_pour_0_to_1, CAPACITY_1)
+pour_1_to_0 = partial(generic_pour_1_to_0, CAPACITY_0)
+
+
+def build_actions():
+    actions = (
+        partial(generic_fill_0, CAPACITY_0),
+        partial(generic_fill_1, CAPACITY_1),
+        empty_0,
+        empty_1,
+        partial(generic_pour_0_to_1, CAPACITY_1),
+        partial(generic_pour_1_to_0, CAPACITY_0),
+    )
+    return actions
 
 
 def test() -> None:
@@ -115,48 +137,54 @@ def test() -> None:
     print(f'Conseguido! {state}')
 
 
-def search(state: State, visited: List[State], *, depth: int=0) -> Optional[List]:
-    if state in visited:
-        # Already visited
-        debug(f'Already visited {state!r}')
+class Runner:
+    def __init__(self, actions) -> None:
+        self.actions = actions
+
+    def search(self, state: State, visited: List[State], *, depth: int=0) -> Optional[List]:
+        if state in visited:
+            # Already visited
+            debug(f'Already visited {state!r}')
+            return None
+
+        candidates = []
+        for action in self.actions:
+            new_state = action(state)
+            if new_state == state:
+                # No way out
+                debug('No way out')
+                continue
+            if check(new_state):
+                # Solution found!
+                debug('Found it!')
+                return [action]
+
+            # Continue explore later
+            candidates.append((action, new_state))
+
+        if depth >= MAXIMUM_DEPTH:
+            # Maximum depth reached
+            debug('Maximum depth reached')
+            return None
+
+        for action, new_state in candidates:
+            visited = [state] + visited
+            result = self.search(new_state, visited, depth=depth+1)
+            if not result:
+                debug('Nothing to see')
+            else:
+                debug('Coming back')
+                return [action] + result
+
+        # Not found
+        debug('Not found!')
         return None
-
-    candidates = []
-    for action in ACTIONS:
-        new_state = action(state)
-        if new_state == state:
-            # No way out
-            debug('No way out')
-            continue
-        if check(new_state):
-            # Solution found!
-            debug('Found it!')
-            return [action]
-
-        # Continue explore later
-        candidates.append((action, new_state))
-
-    if depth >= MAXIMUM_DEPTH:
-        # Maximum depth reached
-        debug('Maximum depth reached')
-        return None
-
-    for action, new_state in candidates:
-        visited = [state] + visited
-        result = search(new_state, visited, depth=depth+1)
-        if not result:
-            debug('Nothing to see')
-        else:
-            debug('Coming back')
-            return [action] + result
-
-    # Not found
-    debug('Not found!')
-    return None
 
 
 def main() -> None:
-    chain = search(State(0, 0), [])
+    actions = build_actions()
+    runner = Runner(actions)
+    chain = runner.search(State(0, 0), [])
     if not chain:
         print('No solution found.')
         raise SystemExit(1)
