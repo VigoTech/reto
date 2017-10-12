@@ -62,16 +62,6 @@ def check(state: State) -> bool:
 
 # Actions
 
-def generic_fill_0(capacity: int, state: State) -> State:
-    "Encher xarra 0"
-    return State(capacity, state.jar_1)
-
-
-def generic_fill_1(capacity: int, state: State) -> State:
-    "Encher xarra 1"
-    return State(state.jar_0, capacity)
-
-
 def generic_pour_0_to_1(capacity: int, state: State) -> State:
     "Verter xarra 0 en 1"
     space = capacity - state.jar_1
@@ -103,16 +93,26 @@ class Empty:
         return State(*jars)
 
 
-fill_0 = partial(generic_fill_0, CAPACITY_0)
-fill_1 = partial(generic_fill_1, CAPACITY_1)
+class Fill:
+    def __init__(self, idx: int, capacity: int) -> None:
+        self.idx = idx
+        self.capacity = capacity
+        self.__doc__ = f'Encher xarra {self.idx}'
+
+    def __call__(self, state: State) -> State:
+        jars = list(state.jars)
+        jars[self.idx] = self.capacity
+        return State(*jars)
+
+
 pour_0_to_1 = partial(generic_pour_0_to_1, CAPACITY_1)
 pour_1_to_0 = partial(generic_pour_1_to_0, CAPACITY_0)
 
 
 def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
     actions = (
-        partial(generic_fill_0, capacity_0),
-        partial(generic_fill_1, capacity_1),
+        Fill(0, capacity_0),
+        Fill(1, capacity_1),
         Empty(0),
         Empty(1),
         partial(generic_pour_0_to_1, capacity_1),
@@ -124,6 +124,8 @@ def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
 def test() -> None:
     empty_0 = Empty(0)
     empty_1 = Empty(1)  # noqa: F841
+    fill_0 = Fill(0, CAPACITY_0)  # noqa: F841
+    fill_1 = Fill(1, CAPACITY_1)
     state = State(0, 0)
     actions = (
         fill_1,
