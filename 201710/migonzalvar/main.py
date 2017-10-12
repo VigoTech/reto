@@ -11,9 +11,10 @@ CAPACITY_1 = 7
 MAXIMUM_DEPTH = 6
 
 
-def debug(value: Any) -> None:
+def debug(value: Any, *, depth: int=0) -> None:
     if os.getenv('DEBUG', 'n').upper() in ('1', 'TRUE', 'Y', 'YES'):
-        print(value, file=sys.stderr)
+        indent = '    ' * depth
+        print(indent + value, file=sys.stderr)
 
 
 class State:
@@ -158,7 +159,7 @@ class Runner:
             depth: int=0) -> Optional[List]:
         if state in visited:
             # Already visited
-            debug(f'Already visited {state!r}')
+            debug(f'Already visited {state!r}', depth=depth)
             return None
 
         candidates = []
@@ -166,11 +167,11 @@ class Runner:
             new_state = action(state)
             if new_state == state:
                 # No way out
-                debug('No way out')
+                debug('No changes', depth=depth)
                 continue
             if self.check(new_state):
                 # Solution found!
-                debug('Found it!')
+                debug('Found it!', depth=depth)
                 return [action]
 
             # Continue explore later
@@ -178,20 +179,18 @@ class Runner:
 
         if depth >= MAXIMUM_DEPTH:
             # Maximum depth reached
-            debug('Maximum depth reached')
+            debug('Maximum depth reached', depth=depth)
             return None
 
         for action, new_state in candidates:
             visited = [state] + visited
             result = self.search(new_state, visited, depth=depth+1)
-            if not result:
-                debug('Nothing to see')
-            else:
+            if result:
                 debug('Coming back')
                 return [action] + result
 
         # Not found
-        debug('Not found!')
+        debug('Not found!', depth=depth)
         return None
 
 
