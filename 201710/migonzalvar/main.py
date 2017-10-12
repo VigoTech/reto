@@ -157,9 +157,15 @@ class Runner:
             visited: List[State],
             *,
             depth: int=0) -> Optional[List]:
+
         if state in visited:
             # Already visited
             debug(f'Already visited {state!r}', depth=depth)
+            return None
+
+        if depth >= MAXIMUM_DEPTH:
+            # Maximum depth reached
+            debug('Maximum depth reached', depth=depth)
             return None
 
         candidates = []
@@ -176,11 +182,6 @@ class Runner:
 
             # Continue explore later
             candidates.append((action, new_state))
-
-        if depth >= MAXIMUM_DEPTH:
-            # Maximum depth reached
-            debug('Maximum depth reached', depth=depth)
-            return None
 
         for action, new_state in candidates:
             visited = [state] + visited
