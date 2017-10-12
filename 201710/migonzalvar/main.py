@@ -8,7 +8,7 @@ from typing import Any, Iterable, List, Optional
 CAPACITY_0 = 4
 CAPACITY_1 = 7
 
-MAXIMUM_DEPTH = 6
+MAXIMUM_DEPTH = 7
 
 
 def debug(value: Any, *, depth: int=0) -> None:
@@ -168,22 +168,25 @@ class Runner:
             debug('Maximum depth reached', depth=depth)
             return None
 
-        candidates = []
         for action in self.actions:
             new_state = action(state)
+
+            # No changes, continue
             if new_state == state:
-                # No way out
                 debug('No changes', depth=depth)
                 continue
+
+            # Visited, continue
+            if new_state in visited:
+                debug(f'Already visited {state!r}', depth=depth)
+                continue
+
+            # Solution found! Stop!
             if self.check(new_state):
-                # Solution found!
                 debug('Found it!', depth=depth)
                 return [action]
 
-            # Continue explore later
-            candidates.append((action, new_state))
-
-        for action, new_state in candidates:
+            # Let's continue with the search
             visited = [state] + visited
             result = self.search(new_state, visited, depth=depth+1)
             if result:
