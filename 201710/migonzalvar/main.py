@@ -72,16 +72,6 @@ def generic_fill_1(capacity: int, state: State) -> State:
     return State(state.jar_0, capacity)
 
 
-def empty_0(state: State) -> State:
-    "Vaciar xarra 0"
-    return State(0, state.jar_1)
-
-
-def empty_1(state: State) -> State:
-    "Vaciar xarra 1"
-    return State(state.jar_0, 0)
-
-
 def generic_pour_0_to_1(capacity: int, state: State) -> State:
     "Verter xarra 0 en 1"
     space = capacity - state.jar_1
@@ -102,6 +92,17 @@ def partial(func: Callable, *args, **kwargs):  # type: ignore
     return wrap
 
 
+class Empty:
+    def __init__(self, idx: int) -> None:
+        self.idx = idx
+        self.__doc__ = f'Vaciar xarra {self.idx}'
+
+    def __call__(self, state: State) -> State:
+        jars = list(state.jars)
+        jars[self.idx] = 0
+        return State(*jars)
+
+
 fill_0 = partial(generic_fill_0, CAPACITY_0)
 fill_1 = partial(generic_fill_1, CAPACITY_1)
 pour_0_to_1 = partial(generic_pour_0_to_1, CAPACITY_1)
@@ -112,8 +113,8 @@ def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
     actions = (
         partial(generic_fill_0, capacity_0),
         partial(generic_fill_1, capacity_1),
-        empty_0,
-        empty_1,
+        Empty(0),
+        Empty(1),
         partial(generic_pour_0_to_1, capacity_1),
         partial(generic_pour_1_to_0, capacity_0),
     )
@@ -121,6 +122,8 @@ def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
 
 
 def test() -> None:
+    empty_0 = Empty(0)
+    empty_1 = Empty(1)  # noqa: F841
     state = State(0, 0)
     actions = (
         fill_1,
