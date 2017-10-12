@@ -15,26 +15,44 @@ def debug(value: Any) -> None:
 
 
 class State:
-    def __init__(self, jar_0: int=0, jar_1: int=0) -> None:
-        self._jar_0 = jar_0
-        self._jar_1 = jar_1
+    def __init__(self, *jars: List[int]) -> None:
+        self.jars = jars
 
-    @property
-    def jar_0(self) -> int:
-        return self._jar_0
+    def get_jar(self, idx: int) -> int:
+        return self.jars[idx]
 
-    @property
-    def jar_1(self) -> int:
-        return self._jar_1
+    def __getattr__(self, name: str) -> Any:
+        _, sep, idx = name.partition('jar_')
+        if sep == 'jar_':
+            try:
+                idx = int(idx)
+            except (ValueError, TypeError):
+                pass
+            else:
+                return self.get_jar(idx)
+
+        raise AttributeError(name)
 
     def __eq__(self, other: Any) -> bool:
-        return (self._jar_0, self._jar_1) == (other.jar_0, other.jar_1)
+        return self.jars == other.jars
+
+    def _repr(self, tpl: str) -> List[str]:
+        fragments = []
+        for idx, value in enumerate(self.jars):
+            line = tpl.format(idx=idx, value=value)
+            fragments.append(line)
+        return fragments
 
     def __str__(self) -> str:
-        return f'Xarra 0: {self.jar_0} litros, Xarra 1: {self.jar_1} litros'
+        tpl = 'Xarra {idx}: {value} litros'
+        fragments = self._repr(tpl)
+        return ', '.join(fragments)
 
     def __repr__(self) -> str:
-        return f'State(jar_0={self.jar_0}, jar_1={self.jar_1})'
+        tpl = 'jar_{idx}={value}'
+        fragments = self._repr(tpl)
+        value = ', '.join(fragments)
+        return f'State({value})'
 
 
 def check(state: State) -> bool:
@@ -81,7 +99,7 @@ ACTIONS = fill_0, fill_1, empty_0, empty_1, pour_0_to_1, pour_1_to_0
 
 
 def test() -> None:
-    state = State()
+    state = State(0, 0)
     actions = (
         fill_1,
         pour_1_to_0,
@@ -138,13 +156,13 @@ def search(state: State, visited: List[State], *, depth: int=0) -> Optional[List
 
 
 def main() -> None:
-    chain = search(State(), [])
+    chain = search(State(0, 0), [])
     if not chain:
         print('No solution found.')
         raise SystemExit(1)
 
     # Execute algorithm with secuence found
-    state = State()
+    state = State(0, 0)
     for action in chain:
         print(action.__doc__)
         state = action(state)
