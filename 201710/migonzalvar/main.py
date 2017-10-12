@@ -1,7 +1,7 @@
 from functools import partial as builtin_partial
 import os
 import sys
-from typing import Any, List, Optional
+from typing import Any, Callable, Iterable, List, Optional
 
 
 CAPACITY_0 = 4
@@ -16,17 +16,17 @@ def debug(value: Any) -> None:
 
 
 class State:
-    def __init__(self, *jars: List[int]) -> None:
+    def __init__(self, *jars: int) -> None:
         self.jars = jars
 
     def get_jar(self, idx: int) -> int:
         return self.jars[idx]
 
     def __getattr__(self, name: str) -> Any:
-        _, sep, idx = name.partition('jar_')
+        _, sep, suffix = name.partition('jar_')
         if sep == 'jar_':
             try:
-                idx = int(idx)
+                idx = int(suffix)
             except (ValueError, TypeError):
                 pass
             else:
@@ -35,7 +35,7 @@ class State:
         raise AttributeError(name)
 
     def __eq__(self, other: Any) -> bool:
-        return self.jars == other.jars
+        return bool(self.jars == other.jars)
 
     def _repr(self, tpl: str) -> List[str]:
         fragments = []
@@ -57,17 +57,17 @@ class State:
 
 
 def check(state: State) -> bool:
-    return state.jar_0 == 6 or state.jar_1 == 6
+    return bool(state.jar_0 == 6 or state.jar_1 == 6)
 
 
 # Actions
 
-def generic_fill_0(capacity, state: State) -> State:
+def generic_fill_0(capacity: int, state: State) -> State:
     "Encher xarra 0"
     return State(capacity, state.jar_1)
 
 
-def generic_fill_1(capacity, state: State) -> State:
+def generic_fill_1(capacity: int, state: State) -> State:
     "Encher xarra 1"
     return State(state.jar_0, capacity)
 
@@ -82,21 +82,21 @@ def empty_1(state: State) -> State:
     return State(state.jar_0, 0)
 
 
-def generic_pour_0_to_1(capacity, state: State) -> State:
+def generic_pour_0_to_1(capacity: int, state: State) -> State:
     "Verter xarra 0 en 1"
     space = capacity - state.jar_1
     exchange = state.jar_0 if state.jar_0 <= space else space
     return State(state.jar_0 - exchange, state.jar_1 + exchange)
 
 
-def generic_pour_1_to_0(capacity, state: State) -> State:
+def generic_pour_1_to_0(capacity: int, state: State) -> State:
     "Verter xarra 1 en 0"
     space = capacity - state.jar_0
     exchange = state.jar_1 if state.jar_1 <= space else space
     return State(state.jar_0 + exchange, state.jar_1 - exchange)
 
 
-def partial(func, *args, **kwargs):
+def partial(func: Callable, *args, **kwargs):  # type: ignore
     wrap = builtin_partial(func, *args, **kwargs)
     wrap.__doc__ = func.__doc__
     return wrap
@@ -108,14 +108,14 @@ pour_0_to_1 = partial(generic_pour_0_to_1, CAPACITY_1)
 pour_1_to_0 = partial(generic_pour_1_to_0, CAPACITY_0)
 
 
-def build_actions():
+def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
     actions = (
-        partial(generic_fill_0, CAPACITY_0),
-        partial(generic_fill_1, CAPACITY_1),
+        partial(generic_fill_0, capacity_0),
+        partial(generic_fill_1, capacity_1),
         empty_0,
         empty_1,
-        partial(generic_pour_0_to_1, CAPACITY_1),
-        partial(generic_pour_1_to_0, CAPACITY_0),
+        partial(generic_pour_0_to_1, capacity_1),
+        partial(generic_pour_1_to_0, capacity_0),
     )
     return actions
 
@@ -138,10 +138,15 @@ def test() -> None:
 
 
 class Runner:
-    def __init__(self, actions) -> None:
+    def __init__(self, actions: Iterable) -> None:
         self.actions = actions
 
-    def search(self, state: State, visited: List[State], *, depth: int=0) -> Optional[List]:
+    def search(
+            self,
+            state: State,
+            visited: List[State],
+            *,
+            depth: int=0) -> Optional[List]:
         if state in visited:
             # Already visited
             debug(f'Already visited {state!r}')
@@ -182,7 +187,8 @@ class Runner:
 
 
 def main() -> None:
-    actions = build_actions()
+    capacities = map(int, sys.argv[1:])
+    actions = build_actions(*capacities)
     runner = Runner(actions)
     chain = runner.search(State(0, 0), [])
     if not chain:
