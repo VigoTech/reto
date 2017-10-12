@@ -1,7 +1,6 @@
-from functools import partial as builtin_partial
 import os
 import sys
-from typing import Any, Callable, Iterable, List, Optional
+from typing import Any, Iterable, List, Optional
 
 
 CAPACITY_0 = 4
@@ -62,26 +61,6 @@ def check(state: State) -> bool:
 
 # Actions
 
-def generic_pour_0_to_1(capacity: int, state: State) -> State:
-    "Verter xarra 0 en 1"
-    space = capacity - state.jar_1
-    exchange = state.jar_0 if state.jar_0 <= space else space
-    return State(state.jar_0 - exchange, state.jar_1 + exchange)
-
-
-def generic_pour_1_to_0(capacity: int, state: State) -> State:
-    "Verter xarra 1 en 0"
-    space = capacity - state.jar_0
-    exchange = state.jar_1 if state.jar_1 <= space else space
-    return State(state.jar_0 + exchange, state.jar_1 - exchange)
-
-
-def partial(func: Callable, *args, **kwargs):  # type: ignore
-    wrap = builtin_partial(func, *args, **kwargs)
-    wrap.__doc__ = func.__doc__
-    return wrap
-
-
 class Empty:
     def __init__(self, idx: int) -> None:
         self.idx = idx
@@ -105,8 +84,24 @@ class Fill:
         return State(*jars)
 
 
-pour_0_to_1 = partial(generic_pour_0_to_1, CAPACITY_1)
-pour_1_to_0 = partial(generic_pour_1_to_0, CAPACITY_0)
+class Pour:
+    def __init__(self, donor: int, recipient: int, capacity: int) -> None:
+        self.donor = donor
+        self.recipient = recipient
+        self.capacity = capacity
+        self.__doc__ = f'Verter xarra {self.donor} en {self.recipient}'
+
+    def __call__(self, state: State) -> State:
+        # Calculate exchange
+        source = state.jars[self.donor]
+        destination = state.jars[self.recipient]
+        space = self.capacity - destination
+        exchange = source if source <= space else space
+        # Do the exchange
+        jars = list(state.jars)
+        jars[self.donor] = source - exchange
+        jars[self.recipient] = destination + exchange
+        return State(*jars)
 
 
 def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
@@ -115,8 +110,8 @@ def build_actions(capacity_0: int, capacity_1: int) -> Iterable:
         Fill(1, capacity_1),
         Empty(0),
         Empty(1),
-        partial(generic_pour_0_to_1, capacity_1),
-        partial(generic_pour_1_to_0, capacity_0),
+        Pour(0, 1, CAPACITY_1),
+        Pour(1, 0, CAPACITY_0),
     )
     return actions
 
@@ -126,6 +121,8 @@ def test() -> None:
     empty_1 = Empty(1)  # noqa: F841
     fill_0 = Fill(0, CAPACITY_0)  # noqa: F841
     fill_1 = Fill(1, CAPACITY_1)
+    pour_0_to_1 = Pour(0, 1, CAPACITY_1)  # noqa: F841
+    pour_1_to_0 = Pour(1, 0, CAPACITY_0)
     state = State(0, 0)
     actions = (
         fill_1,
