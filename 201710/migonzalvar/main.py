@@ -18,8 +18,12 @@ def debug(value: Any, *, depth: Optional[int]=None) -> None:
         print(indent + value, file=sys.stderr)
 
 
+class Jar(int):
+    pass
+
+
 class State:
-    def __init__(self, *jars: int) -> None:
+    def __init__(self, *jars: Jar) -> None:
         self.jars = jars
 
     def get_jar(self, idx: int) -> int:
@@ -73,7 +77,7 @@ class Empty(Action):
 
     def __call__(self, state: State) -> State:
         jars = list(state.jars)
-        jars[self.idx] = 0
+        jars[self.idx] = Jar(0)
         return State(*jars)
 
 
@@ -85,7 +89,7 @@ class Fill(Action):
 
     def __call__(self, state: State) -> State:
         jars = list(state.jars)
-        jars[self.idx] = self.capacity
+        jars[self.idx] = Jar(self.capacity)
         return State(*jars)
 
 
@@ -104,8 +108,8 @@ class Pour(Action):
         exchange = source if source <= space else space
         # Do the exchange
         jars = list(state.jars)
-        jars[self.donor] = source - exchange
-        jars[self.recipient] = destination + exchange
+        jars[self.donor] = Jar(source - exchange)
+        jars[self.recipient] = Jar(destination + exchange)
         return State(*jars)
 
 
@@ -128,7 +132,7 @@ def test() -> None:
     fill_1 = Fill(1, CAPACITY_1)
     pour_0_to_1 = Pour(0, 1, CAPACITY_1)  # noqa: F841
     pour_1_to_0 = Pour(1, 0, CAPACITY_0)
-    state = State(0, 0)
+    state = State(Jar(0), Jar(0))
     actions = (
         fill_1,
         pour_1_to_0,
@@ -196,7 +200,7 @@ class Runner:
 def main() -> None:
     args = [int(i) for i in sys.argv[1:]]
     goal, capacities = args[0], args[1:]
-    zeroes = [0 for _ in capacities]
+    zeroes = [Jar(0) for _ in capacities]
     actions = build_actions(*capacities)
     for depth in range(1, MAXIMUM_DEPTH):
         runner = Runner(actions, goal, depth)
