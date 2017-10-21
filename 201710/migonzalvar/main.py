@@ -8,12 +8,13 @@ from typing import Any, Iterable, List, Optional
 CAPACITY_0 = 4
 CAPACITY_1 = 7
 
-MAXIMUM_DEPTH = 8
+MAXIMUM_DEPTH = 10
 
 
-def debug(value: Any, *, depth: int=0) -> None:
+def debug(value: Any, *, depth: Optional[int]=None) -> None:
+    depth = depth + 1 if depth is not None else 0
     if os.getenv('DEBUG', 'n').upper() in ('1', 'TRUE', 'Y', 'YES'):
-        indent = '    ' * depth
+        indent = '  ' * depth
         print(indent + value, file=sys.stderr)
 
 
@@ -184,7 +185,7 @@ class Runner:
             visited = [state] + visited
             result = self.search(new_state, visited, depth=depth+1)
             if result:
-                debug('Coming back')
+                debug('Coming back', depth=depth)
                 return [action] + result
 
         # Not found
@@ -203,6 +204,7 @@ def main() -> None:
         if chain:
             debug(f'Found solution for depth {depth}')
             break
+        debug(f'No solution for depth {depth}')
     else:
         print('No solution found.')
         raise SystemExit(1)
