@@ -8,7 +8,7 @@ from typing import Any, Iterable, List, Optional
 CAPACITY_0 = 4
 CAPACITY_1 = 7
 
-MAXIMUM_DEPTH = 7
+MAXIMUM_DEPTH = 8
 
 
 def debug(value: Any, *, depth: int=0) -> None:
@@ -144,9 +144,10 @@ def test() -> None:
 
 
 class Runner:
-    def __init__(self, actions: Iterable, goal: int) -> None:
-        self.actions = actions
+    def __init__(self, actions: Iterable, goal: int, depth: int) -> None:
+        self.actions = tuple(actions)
         self.goal = goal
+        self.depth = depth
 
     def check(self, state: State) -> bool:
         return self.goal in state.jars
@@ -163,29 +164,22 @@ class Runner:
             debug(f'Already visited {state!r}', depth=depth)
             return None
 
-        if depth >= MAXIMUM_DEPTH:
+        if depth >= self.depth:
             # Maximum depth reached
             debug('Maximum depth reached', depth=depth)
             return None
 
-        for action in self.actions:
-            new_state = action(state)
+        results = [action(state) for action in self.actions]
 
-            # No changes, continue
-            if new_state == state:
-                debug('No changes', depth=depth)
-                continue
+        # Check if any of the new states is the goal
+        solutions = [self.check(new_state) for new_state in results]
+        if any(solutions):
+            idx = solutions.index(True)
+            action = self.actions[idx]
+            return [action]
 
-            # Visited, continue
-            if new_state in visited:
-                debug(f'Already visited {state!r}', depth=depth)
-                continue
-
-            # Solution found! Stop!
-            if self.check(new_state):
-                debug('Found it!', depth=depth)
-                return [action]
-
+        # No solution yet, continue searching
+        for action, new_state in zip(self.actions, results):
             # Let's continue with the search
             visited = [state] + visited
             result = self.search(new_state, visited, depth=depth+1)
@@ -203,13 +197,17 @@ def main() -> None:
     goal, capacities = args[0], args[1:]
     zeroes = [0 for _ in capacities]
     actions = build_actions(*capacities)
-    runner = Runner(actions, goal)
-    chain = runner.search(State(*zeroes), [])
-    if not chain:
+    for depth in range(1, MAXIMUM_DEPTH):
+        runner = Runner(actions, goal, depth)
+        chain = runner.search(State(*zeroes), [])
+        if chain:
+            debug(f'Found solution for depth {depth}')
+            break
+    else:
         print('No solution found.')
         raise SystemExit(1)
 
-    # Execute algorithm with secuence found
+    # Execute algorithm with the ofund secuence
     state = State(0, 0)
     for action in chain:
         print(action.__doc__)
