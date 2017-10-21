@@ -162,13 +162,13 @@ def test() -> None:
 
 
 class Runner:
-    def __init__(self, actions: Iterable, goal: Jar, depth: int) -> None:
+    def __init__(self, actions: Iterable, goal: int, depth: int) -> None:
         self.actions = tuple(actions)
         self.goal = goal
         self.depth = depth
 
     def check(self, state: State) -> bool:
-        return self.goal in state.jars
+        return self.goal in (jar.value for jar in state.jars)
 
     def search(
             self,
@@ -212,7 +212,7 @@ class Runner:
 
 def main() -> None:
     args = [int(i) for i in sys.argv[1:]]
-    goal, capacities = Jar(args[0]), args[1:]
+    goal, capacities = args[0], args[1:]
     zeroes = [Jar(0) for _ in capacities]
     actions = build_actions(*capacities)
     for depth in range(1, MAXIMUM_DEPTH):
