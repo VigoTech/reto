@@ -18,15 +18,28 @@ def debug(value: Any, *, depth: Optional[int]=None) -> None:
         print(indent + value, file=sys.stderr)
 
 
-class Jar(int):
-    pass
+class Jar:
+    def __init__(self, value: int) -> None:
+        self.value = value
+
+    def __add__(self, value: int) -> None:
+        self.value += value
+
+    def __sub__(self, value: int) -> None:
+        self.value -= value
+
+    def __eq__(self, other: Any) -> bool:
+        return bool(self.value == other.value)
+
+    def __str__(self) -> str:
+        return f'{self.value} litros'
 
 
 class State:
     def __init__(self, *jars: Jar) -> None:
         self.jars = jars
 
-    def get_jar(self, idx: int) -> int:
+    def get_jar(self, idx: int) -> Jar:
         return self.jars[idx]
 
     def __getattr__(self, name: str) -> Any:
@@ -52,7 +65,7 @@ class State:
         return fragments
 
     def __str__(self) -> str:
-        tpl = 'Xarra {idx}: {value} litros'
+        tpl = 'Xarra {idx}: {value}'
         fragments = self._repr(tpl)
         return ', '.join(fragments)
 
@@ -104,12 +117,12 @@ class Pour(Action):
         # Calculate exchange
         source = state.jars[self.donor]
         destination = state.jars[self.recipient]
-        space = self.capacity - destination
-        exchange = source if source <= space else space
+        space = self.capacity - destination.value
+        exchange = source.value if source.value <= space else space
         # Do the exchange
         jars = list(state.jars)
-        jars[self.donor] = Jar(source - exchange)
-        jars[self.recipient] = Jar(destination + exchange)
+        jars[self.donor] = Jar(source.value - exchange)
+        jars[self.recipient] = Jar(destination.value + exchange)
         return State(*jars)
 
 
@@ -144,12 +157,12 @@ def test() -> None:
     for action in actions:
         print(action.__doc__)
         state = action(state)
-    assert 6 in state.jars
+    assert Jar(6) in state.jars
     print(f'Conseguido! {state}')
 
 
 class Runner:
-    def __init__(self, actions: Iterable, goal: int, depth: int) -> None:
+    def __init__(self, actions: Iterable, goal: Jar, depth: int) -> None:
         self.actions = tuple(actions)
         self.goal = goal
         self.depth = depth
@@ -199,7 +212,7 @@ class Runner:
 
 def main() -> None:
     args = [int(i) for i in sys.argv[1:]]
-    goal, capacities = args[0], args[1:]
+    goal, capacities = Jar(args[0]), args[1:]
     zeroes = [Jar(0) for _ in capacities]
     actions = build_actions(*capacities)
     for depth in range(1, MAXIMUM_DEPTH):
