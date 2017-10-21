@@ -208,7 +208,7 @@ def main() -> None:
         raise SystemExit(1)
 
     # Execute algorithm with the ofund secuence
-    state = State(0, 0)
+    state = State(*zeroes)
     for action in chain:
         print(action.__doc__)
         state = action(state)
