@@ -19,20 +19,38 @@ def debug(value: Any, *, depth: Optional[int]=None) -> None:
 
 
 class Jar:
-    def __init__(self, value: int) -> None:
-        self.value = value
+    def __init__(self, value: int, capacity: int) -> None:
+        self._value = value
+        self._capacity = capacity
+
+    @property
+    def capacity(self) -> int:
+        return self._capacity
+
+    @property
+    def value(self) -> int:
+        return self._value
 
     def __add__(self, value: int) -> None:
-        self.value += value
+        self._value += value
 
     def __sub__(self, value: int) -> None:
-        self.value -= value
+        self._value -= value
 
     def __eq__(self, other: Any) -> bool:
-        return bool(self.value == other.value)
+        return (self.value, self.capacity) == (other.value, other.capacity)
 
     def __str__(self) -> str:
         return f'{self.value} litros'
+
+    def empty(self) -> 'Jar':
+        return Jar(0, self.capacity)
+
+    def fill(self) -> 'Jar':
+        return Jar(self.capacity, self.capacity)
+
+    def put(self, value: int) -> 'Jar':
+        return Jar(value, self.capacity)
 
 
 class State:
@@ -90,7 +108,7 @@ class Empty(Action):
 
     def __call__(self, state: State) -> State:
         jars = list(state.jars)
-        jars[self.idx] = Jar(0)
+        jars[self.idx] = jars[self.idx].empty()
         return State(*jars)
 
 
@@ -102,7 +120,7 @@ class Fill(Action):
 
     def __call__(self, state: State) -> State:
         jars = list(state.jars)
-        jars[self.idx] = Jar(self.capacity)
+        jars[self.idx] = jars[self.idx].fill()
         return State(*jars)
 
 
@@ -121,8 +139,8 @@ class Pour(Action):
         exchange = source.value if source.value <= space else space
         # Do the exchange
         jars = list(state.jars)
-        jars[self.donor] = Jar(source.value - exchange)
-        jars[self.recipient] = Jar(destination.value + exchange)
+        jars[self.donor] = source.put(source.value - exchange)
+        jars[self.recipient] = destination.put(destination.value + exchange)
         return State(*jars)
 
 
@@ -145,7 +163,7 @@ def test() -> None:
     fill_1 = Fill(1, CAPACITY_1)
     pour_0_to_1 = Pour(0, 1, CAPACITY_1)  # noqa: F841
     pour_1_to_0 = Pour(1, 0, CAPACITY_0)
-    state = State(Jar(0), Jar(0))
+    state = State(Jar(0, CAPACITY_0), Jar(0, CAPACITY_1))
     actions = (
         fill_1,
         pour_1_to_0,
@@ -157,7 +175,7 @@ def test() -> None:
     for action in actions:
         print(action.__doc__)
         state = action(state)
-    assert Jar(6) in state.jars
+    assert Jar(6, 7) in state.jars
     print(f'Conseguido! {state}')
 
 
@@ -213,7 +231,7 @@ class Runner:
 def main() -> None:
     args = [int(i) for i in sys.argv[1:]]
     goal, capacities = args[0], args[1:]
-    zeroes = [Jar(0) for _ in capacities]
+    zeroes = [Jar(0, capacity) for capacity in capacities]
     actions = build_actions(*capacities)
     for depth in range(1, MAXIMUM_DEPTH):
         runner = Runner(actions, goal, depth)
