@@ -113,9 +113,8 @@ class Empty(Action):
 
 
 class Fill(Action):
-    def __init__(self, idx: int, capacity: int) -> None:
+    def __init__(self, idx: int) -> None:
         self.idx = idx
-        self.capacity = capacity
         self.__doc__ = f'Encher xarra {self.idx}'
 
     def __call__(self, state: State) -> State:
@@ -125,17 +124,16 @@ class Fill(Action):
 
 
 class Pour(Action):
-    def __init__(self, donor: int, recipient: int, capacity: int) -> None:
+    def __init__(self, donor: int, recipient: int) -> None:
         self.donor = donor
         self.recipient = recipient
-        self.capacity = capacity
         self.__doc__ = f'Verter xarra {self.donor} en {self.recipient}'
 
     def __call__(self, state: State) -> State:
         # Calculate exchange
         source = state.jars[self.donor]
         destination = state.jars[self.recipient]
-        space = self.capacity - destination.value
+        space = destination.capacity - destination.value
         exchange = source.value if source.value <= space else space
         # Do the exchange
         jars = list(state.jars)
@@ -144,25 +142,25 @@ class Pour(Action):
         return State(*jars)
 
 
-def build_actions(*capacities: int) -> Iterable:
+def build_actions(number_of_jars: int) -> Iterable:
     actions = []  # type: List[Action]
-    for n, capacity in enumerate(capacities):
-        actions.append(Fill(n, capacity))
+    for n in range(number_of_jars):
+        actions.append(Fill(n))
         actions.append(Empty(n))
-        for donor in range(len(capacities)):
+        for donor in range(number_of_jars):
             if donor == n:
                 continue
-            actions.append(Pour(donor, n, capacity))
+            actions.append(Pour(donor, n))
     return actions
 
 
 def test() -> None:
     empty_0 = Empty(0)
     empty_1 = Empty(1)  # noqa: F841
-    fill_0 = Fill(0, CAPACITY_0)  # noqa: F841
-    fill_1 = Fill(1, CAPACITY_1)
-    pour_0_to_1 = Pour(0, 1, CAPACITY_1)  # noqa: F841
-    pour_1_to_0 = Pour(1, 0, CAPACITY_0)
+    fill_0 = Fill(0)  # noqa: F841
+    fill_1 = Fill(1)
+    pour_0_to_1 = Pour(0, 1)  # noqa: F841
+    pour_1_to_0 = Pour(1, 0)
     state = State(Jar(0, CAPACITY_0), Jar(0, CAPACITY_1))
     actions = (
         fill_1,
@@ -228,14 +226,18 @@ class Runner:
         return None
 
 
+def get_initial_state(*capacities: int) -> State:
+    return State(*[Jar(0, capacity) for capacity in capacities])
+
+
 def main() -> None:
     args = [int(i) for i in sys.argv[1:]]
     goal, capacities = args[0], args[1:]
-    zeroes = [Jar(0, capacity) for capacity in capacities]
-    actions = build_actions(*capacities)
+    initial_state = get_initial_state(*capacities)
+    actions = build_actions(len(capacities))
     for depth in range(1, MAXIMUM_DEPTH):
         runner = Runner(actions, goal, depth)
-        chain = runner.search(State(*zeroes), [])
+        chain = runner.search(initial_state, [])
         if chain:
             debug(f'Found solution for depth {depth}')
             break
@@ -245,7 +247,7 @@ def main() -> None:
         raise SystemExit(1)
 
     # Execute algorithm with the ofund secuence
-    state = State(*zeroes)
+    state = initial_state
     for action in chain:
         print(action.__doc__)
         state = action(state)
