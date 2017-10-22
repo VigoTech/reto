@@ -5,9 +5,6 @@ import sys
 from typing import Any, Iterable, List, Optional, Tuple
 
 
-CAPACITY_0 = 4
-CAPACITY_1 = 7
-
 MAXIMUM_DEPTH = 10
 
 # Utils
@@ -157,13 +154,18 @@ def build_actions(number_of_jars: int) -> Iterable:
 
 
 def test() -> None:
+    # Initial conditions
+    capacity_0 = 4
+    capacity_1 = 7
+    state = State(Jar(0, capacity_0), Jar(0, capacity_1))
+
+    # Actions
     empty_0 = Empty(0)
     # empty_1 = Empty(1)  # noqa: F841
     # fill_0 = Fill(0)  # noqa: F841
     fill_1 = Fill(1)
     # pour_0_to_1 = Pour(0, 1)  # noqa: F841
     pour_1_to_0 = Pour(1, 0)
-    state = State(Jar(0, CAPACITY_0), Jar(0, CAPACITY_1))
     actions = (
         fill_1,
         pour_1_to_0,
@@ -172,9 +174,13 @@ def test() -> None:
         fill_1,
         pour_1_to_0,
     )
+
+    # Apply solution
     for action in actions:
         print(action.__doc__)
         state = action(state)
+
+    # Check result
     assert Jar(6, 7) in state.jars
     print(f'Conseguido! {state}')
 
