@@ -60,22 +60,11 @@ class Jar:
 
 class State:
     def __init__(self, *jars: Jar) -> None:
-        self.jars = jars
+        self._jars = list(jars)
 
-    def get_jar(self, idx: int) -> Jar:
-        return self.jars[idx]
-
-    def __getattr__(self, name: str) -> Any:
-        _, sep, suffix = name.partition('jar_')
-        if sep == 'jar_':
-            try:
-                idx = int(suffix)
-            except (ValueError, TypeError):
-                pass
-            else:
-                return self.get_jar(idx)
-
-        raise AttributeError(name)
+    @property
+    def jars(self) -> List[Jar]:
+        return self._jars
 
     def __eq__(self, other: Any) -> bool:
         return bool(self.jars == other.jars)
