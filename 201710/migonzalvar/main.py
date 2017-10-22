@@ -2,7 +2,7 @@
 
 import os
 import sys
-from typing import Any, Iterable, List, Optional
+from typing import Any, Iterable, List, Optional, Tuple
 
 
 CAPACITY_0 = 4
@@ -10,12 +10,17 @@ CAPACITY_1 = 7
 
 MAXIMUM_DEPTH = 10
 
+# Utils
+
 
 def debug(value: Any, *, depth: Optional[int]=None) -> None:
     depth = depth + 1 if depth is not None else 0
     if os.getenv('DEBUG', 'n').upper() in ('1', 'TRUE', 'Y', 'YES'):
         indent = '  ' * depth
         print(indent + value, file=sys.stderr)
+
+
+# Model
 
 
 class Jar:
@@ -94,7 +99,12 @@ class State:
         return f'State({value})'
 
 
+def get_initial_state(*capacities: int) -> State:
+    return State(*[Jar(0, capacity) for capacity in capacities])
+
+
 # Actions
+
 
 class Action:
     def __call__(self, state: State) -> State:
@@ -154,12 +164,15 @@ def build_actions(number_of_jars: int) -> Iterable:
     return actions
 
 
+# Test
+
+
 def test() -> None:
     empty_0 = Empty(0)
-    empty_1 = Empty(1)  # noqa: F841
-    fill_0 = Fill(0)  # noqa: F841
+    # empty_1 = Empty(1)  # noqa: F841
+    # fill_0 = Fill(0)  # noqa: F841
     fill_1 = Fill(1)
-    pour_0_to_1 = Pour(0, 1)  # noqa: F841
+    # pour_0_to_1 = Pour(0, 1)  # noqa: F841
     pour_1_to_0 = Pour(1, 0)
     state = State(Jar(0, CAPACITY_0), Jar(0, CAPACITY_1))
     actions = (
@@ -175,6 +188,9 @@ def test() -> None:
         state = action(state)
     assert Jar(6, 7) in state.jars
     print(f'Conseguido! {state}')
+
+
+# Algorithm
 
 
 class Runner:
@@ -226,15 +242,20 @@ class Runner:
         return None
 
 
-def get_initial_state(*capacities: int) -> State:
-    return State(*[Jar(0, capacity) for capacity in capacities])
+# Main
 
-
-def main() -> None:
+def parse() -> Tuple[int, List[int]]:
     args = [int(i) for i in sys.argv[1:]]
     goal, capacities = args[0], args[1:]
+    return goal, capacities
+
+
+def run(goal: int, *capacities: int) -> None:
+    # Init problem
     initial_state = get_initial_state(*capacities)
     actions = build_actions(len(capacities))
+
+    # Run algorithm from 1 to MAXIMUM_DEPTH
     for depth in range(1, MAXIMUM_DEPTH):
         runner = Runner(actions, goal, depth)
         chain = runner.search(initial_state, [])
@@ -246,12 +267,17 @@ def main() -> None:
         print('No solution found.')
         raise SystemExit(1)
 
-    # Execute algorithm with the ofund secuence
+    # Execute algorithm with the found secuence
     state = initial_state
     for action in chain:
         print(action.__doc__)
         state = action(state)
     print(f'Conseguido! {state}')
+
+
+def main() -> None:
+    goal, capacities = parse()
+    run(goal, *capacities)
 
 
 if __name__ == '__main__':
