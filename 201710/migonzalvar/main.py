@@ -1,5 +1,27 @@
 #!/bin/env python3
 
+"""Solución ao reto de VigoTech 201710.
+
+O programa recibe coma entrada unha cantidade específica como obxectivo e a
+capacidade das xarras. Coma resultado imprime as accións necesarias para que
+nunha das xarras consigamos ter a cantidade obxectivo.
+
+Por exemplo::
+
+    $ ./main.py 6 4 7
+    Encher xarra 1
+    Verter xarra 1 en 0
+    Vaciar xarra 0
+    Verter xarra 1 en 0
+    Encher xarra 1
+    Verter xarra 1 en 0
+    Conseguido! Xarra 0: 4 litros, Xarra 1: 6 litros
+
+Máis información en
+https://github.com/VigoTech/reto/blob/master/201710/README.md
+"""
+
+import argparse
 import os
 import sys
 from typing import Any, Iterable, List, Optional, Tuple
@@ -239,10 +261,25 @@ class Runner:
 
 # Main
 
+def get_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description=__doc__,
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    parser.add_argument('goal', type=int, help='Obxectivo')
+    parser.add_argument(
+        'capacity',
+        type=int,
+        nargs='+',
+        help='Capacidade da xarra'
+    )
+    return parser
+
+
 def parse() -> Tuple[int, List[int]]:
-    args = [int(i) for i in sys.argv[1:]]
-    goal, capacities = args[0], args[1:]
-    return goal, capacities
+    parser = get_parser()
+    options = parser.parse_args()
+    return options.goal, options.capacity
 
 
 def run(goal: int, *capacities: int) -> None:
