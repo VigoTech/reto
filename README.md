@@ -18,7 +18,11 @@ Se queres participar pero tes dubidas, contacta no canal #reto da [VigoTech Alli
 
 ## Reto Outubro 2017: data límite Martes 31 de Outubro as 21:00
 
-Ver [2017010/README.md](201710/README.md)
+Ver [201710/README.md](201710/README.md)
+
+### PRs:
+
+- [@migonzalvar](https://github.com/migonzalvar) en Python: https://github.com/vigojug/reto/pull/33
 
 ## Reto Junio 2017: terminado
 
