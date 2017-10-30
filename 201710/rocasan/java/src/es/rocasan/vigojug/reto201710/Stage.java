@@ -9,8 +9,10 @@
  */
 package es.rocasan.vigojug.reto201710;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import javafx.stage.StageStyle;
 
 class MaxTicksReachException extends Exception {
 	
@@ -62,11 +64,13 @@ class State {
 	public String operation;
 	public String fromState;
 	public Integer recursionLevel;
+	public Boolean visited;
 	public State(String name, String operation, String fromState, Integer recursionLevel) {
 		this.name = name;
 		this.operation = operation;
 		this.fromState = fromState;
 		this.recursionLevel = recursionLevel;
+		this.visited = false;
 	}
 }
 
@@ -119,6 +123,8 @@ public class Stage {
 	 */
 	public Boolean debug = false;
 	
+	private ArrayList<String> notVisitedStates;
+	
 	/**
 	 * Constructor that receibes the target to reach, and the list of jugs. The 
 	 * default limit of ticks are 1000.
@@ -126,6 +132,7 @@ public class Stage {
 	 * @param jugs A array of Jugs
 	 */
 	public Stage(Integer target, Jug[] jugs) {
+		this.notVisitedStates = new ArrayList<>();
 		this.target = target;
 		this.jugs = jugs;
 		ensureTargetAndJugCapacities();
@@ -140,6 +147,7 @@ public class Stage {
 	 * @param maxTicks The limit of attempts of find out all posible states.
 	 */
 	public Stage(Integer target, Jug[] jugs, Integer maxTicks) {
+		this.notVisitedStates = new ArrayList<>();
 		this.target = target;
 		this.jugs = jugs;
 		ensureTargetAndJugCapacities();
@@ -194,12 +202,12 @@ public class Stage {
 	 */
 	private String actualState() {
 		String state = "";
-		for(int j=0; j<jugs.length; j++) {
+			for(int j=0; j<jugs.length; j++) {
 			state += jugs[j].getAmount();
-			if((j+1) < jugs.length) {
+				if((j+1) < jugs.length) {
 				state += ",";
+				}
 			}
-		}
 		return state;
 	}
 	
@@ -212,30 +220,19 @@ public class Stage {
 	 * @return 
 	 */
 	private Boolean addNewState(String newState, String transition, String from) {
-		if(states.containsKey(newState)) {
-			// if newState exists but was included in other recursion branch more deeper, overwrite and continue
-			// In other words, the actual recursion level is lower than the state saved previously
-			State state = states.get(newState);
-			if(recursionLevel < state.recursionLevel ) {
-				states.put(newState, new State(newState, transition, from, recursionLevel));
-			}
-			else {
-				return false;
-			}
-		}
-		else {
+		if(!states.containsKey(newState)) {
 			states.put(newState, new State(newState, transition, from, recursionLevel ));
-		}
-		// at this point new state was stablished. Check if it is a valid solution
-		if(checkIsASolution()) {
-			print("SOLUTION!");
-			// if the new state is a solution mark it as a solution if it is the first
-			// found or if it has a lower recursion level
-			if(bestStateSolution==null || recursionLevel < states.get(bestStateSolution).recursionLevel) {
-				bestStateSolution = actualState();
+			notVisitedStates.add(newState);
+			// at this point new state was stablished. Check if it is a valid solution
+			if(checkIsASolution()) {
+				print("SOLUTION!");
+				// if the new state is a solution mark it as a solution, as it is the first found
+				if(bestStateSolution==null) {
+					bestStateSolution = newState;
+				}
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	/**
@@ -283,11 +280,7 @@ public class Stage {
 				break;
 		}
 		
-		print("Exploring "+initialState+" / "+operation+" / "+actualState());
-		
-		if(addNewState(actualState(), operation, initialState)) {
-			findSolution();	
-		}
+		addNewState(actualState(), operation, initialState);
 		
 		setState(initialState);
 	}
@@ -296,31 +289,69 @@ public class Stage {
 	 * Show the states table for debugging.
 	 * @return 
 	 */
-	private String showStates() {
-		String out = "";
-		for(String stateName : states.keySet()) {
-			State state = states.get(stateName);
-			out += "\t"+state.name+" [ "+state.fromState+" "+state.operation+" "+state.recursionLevel+" ]\n";
+	private void showStates() {
+		if(debug) {
+			String out = "";
+			for(String stateName : states.keySet()) {
+				State state = states.get(stateName);
+				out += "\t"+state.name+" [ "+state.fromState+" > "+state.operation+" / "+state.recursionLevel+" "+(state.visited?"\u2714":"")+"]\n";
+			}
+			print("Full states table:\n"+out);
 		}
-		return out;
 	}
 	
 	/**
-	 * Controls the recursion process. Run all operations with the current state.
+	 * Controls the recursion process. Run all operations for the first n-remaining 
+	 * unvisited states (new recursion level).
+	 * @param n The number of states to operate
 	 * @throws MaxTicksReachException 
 	 */
-	private void findSolution() throws MaxTicksReachException {
+	private void findSolution(int n) throws MaxTicksReachException {
 		recursionLevel++;
-		for(int j1=0; j1<jugs.length; j1++) {
-			for(int j2=0; j2<jugs.length; j2++) {
-				if(j1 != j2) {
-					operate(DUMP,j1,j2);
+		
+		// if not unvisited states remain, return
+		if(notVisitedStates.size() == 0) {
+			return;
+		}
+		
+		// loop the n-first not visited states
+		for( ; n > 0 ; n--) {
+			setState(notVisitedStates.remove(0));
+
+			String actualState = actualState();
+
+			print("Exploring "+actualState);
+
+			states.get(actualState).visited = true;
+
+			// explore new posible states, operate over the actual state
+			for(int j1=0; j1<jugs.length; j1++) {
+				for(int j2=0; j2<jugs.length; j2++) {
+					if(j1 != j2) {
+						operate(DUMP,j1,j2);
+					}
+				}
+				operate(FILL,j1,null);
+				operate(EMPTY,j1,null);
+				
+				// if solution is detected, end
+				if(bestStateSolution != null) {
+					return;
 				}
 			}
-			operate(FILL,j1,null);
-			operate(EMPTY,j1,null);
 		}
+		
+		findSolution(notVisitedStates.size());
+		
 		recursionLevel--;
+	}
+	
+	/**
+	 * Init properly the recursive findSolution process.
+	 * @throws MaxTicksReachException 
+	 */
+	private void initFindSolution() throws MaxTicksReachException {
+		findSolution(notVisitedStates.size());
 	}
 	
 	/**
@@ -373,18 +404,21 @@ public class Stage {
 		try {
 			// init states with the actual state
 			addNewState(actualState(), "Start", "");
-			findSolution();
+			initFindSolution();
 		}
 		catch(MaxTicksReachException e) {
 			solution = "Not all posibilities explored, too much intents.\n\n";
+		}
+		catch(StackOverflowError e) {
+			solution = "Not all posibilities explored, recursion exceeded.\n\n";
 		}
 		if(bestStateSolution!=null) {
 			solution += "Solution found:" + buildSolution();
 		}
 		else {
-			solution += "Solution not found";
+			solution += "There is no solution.";
 		}
-		print("Full states table:\n"+showStates());
+		showStates();
 		return solution;
 	}
 }
