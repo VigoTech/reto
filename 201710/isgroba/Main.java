@@ -1,4 +1,3 @@
-package lechera;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -26,6 +25,22 @@ public class Main {
 		}
 		return false;
 	}
+
+	public static int lecturaDatos(String frase) {
+		int litros=0;
+		System.out.println(frase);
+		try {
+			litros = Integer.valueOf(br.readLine()).intValue();
+			
+		}catch(NumberFormatException nfe) {
+			System.out.println("Error datos!!");
+			lecturaDatos(frase);
+		} catch (IOException e) {
+			System.out.println("Error E/S");
+			lecturaDatos(frase);
+		}
+		return litros;
+	}
 	
 	public static void main(String[] args) {
 		
@@ -47,22 +62,6 @@ public class Main {
 		b2.encher();
 		
 		if(b2.traspaso(b1, medida))	System.out.println(" Contido conseguido --> " + b2.getContido());	
-	}
-
-	public static int lecturaDatos(String frase) {
-		int litros=0;
-		System.out.println(frase);
-		try {
-			litros = Integer.valueOf(br.readLine()).intValue();
-			
-		}catch(NumberFormatException nfe) {
-			System.out.println("Error datos!!");
-			lecturaDatos(frase);
-		} catch (IOException e) {
-			System.out.println("Error E/S");
-			lecturaDatos(frase);
-		}
-		return litros;
 	}
 	
 }

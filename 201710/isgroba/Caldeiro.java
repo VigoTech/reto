@@ -1,4 +1,3 @@
-package lechera;
 
 public class Caldeiro {
 
