@@ -16,13 +16,17 @@ Se queres participar pero tes dubidas, contacta no canal #reto da [VigoTech Alli
 
 - Calquera pode propoñer un novo reto facendo unha PR neste repositorio. O reto revisarase pola organización para asegurar que cumpre os obxetivos da actividade.
 
-## Reto Outubro 2017: data límite Martes 31 de Outubro as 21:00
+## Reto Outubro 2017: terminado
 
 Ver [201710/README.md](201710/README.md)
 
 ### PRs:
 
 - [@migonzalvar](https://github.com/migonzalvar) en Python: https://github.com/vigojug/reto/pull/33
+- [@ivanlc80](https://github.com/ivanlc80) en Java: https://github.com/vigojug/reto/pull/34
+- [@rocasan](https://github.com/rocasan) en Java: https://github.com/vigojug/reto/pull/35
+- [@isGroba](https://github.com/isGroba) en Java: https://github.com/vigojug/reto/pull/36
+
 
 ## Reto Junio 2017: terminado
 
